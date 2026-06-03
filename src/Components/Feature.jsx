@@ -4,7 +4,7 @@ import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 
-const Feature = () => {
+const Feature = ({ search }) => {
   const [seniors, setSeniors] = useState([]);
 
   useEffect(() => {
@@ -22,25 +22,38 @@ const Feature = () => {
     loadSeniors();
   }, []);
 
+  const filteredSeniors = seniors.filter(
+    (student) =>
+      student.college?.toLowerCase().includes(search.toLowerCase()) ||
+      student.name?.toLowerCase().includes(search.toLowerCase()) ||
+      student.company?.toLowerCase().includes(search.toLowerCase()),
+  );
+
   return (
     <div className="profile">
-      {seniors.map((student) => (
-        <Link
-          key={student.id}
-          to={`/senior/${student.id}`}
-          style={{
-            textDecoration: "none",
-            color: "inherit",
-          }}
-        >
-          <Profile
-            name={student.name}
-            college={student.college}
-            classof={student.class_of}
-            placed={student.company}
-          />
-        </Link>
-      ))}
+      {filteredSeniors.length === 0 ? (
+        <p style={{ textAlign: "center", color: "#888", marginTop: "2rem" }}>
+          No results found for "{search}"
+        </p>
+      ) : (
+        filteredSeniors.map((student) => (
+          <Link
+            key={student.id}
+            to={`/senior/${student.id}`}
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <Profile
+              name={student.name}
+              college={student.college}
+              classof={student.class_of}
+              placed={student.company}
+            />
+          </Link>
+        ))
+      )}
     </div>
   );
 };
