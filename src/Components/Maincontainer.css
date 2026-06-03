@@ -1,0 +1,97 @@
+#main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.heading {
+  line-height: 1.4;
+  color: #18230f;
+  width: 60%;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 0;
+  animation: blink 1s ease;
+}
+
+@keyframes blink {
+  from {
+    transform: translateZ(-50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateZ(0);
+    opacity: 1;
+  }
+}
+
+.s-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.s-btn input {
+  width: 200px;
+  margin-top: 20px;
+  font-size: 12px;
+  padding: 10px 36px 10px 16px;
+  border-radius: 25px;
+  border: none;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  transition: width 0.3s ease-in-out;
+  box-sizing: border-box;
+}
+
+.s-btn input:focus,
+.s-btn input:hover {
+  width: 300px;
+  outline: none;
+}
+
+.s-btn i {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-25%);
+  color: #18230f;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .heading {
+    width: 90%;
+    font-size: 1.2rem;
+    line-height: 1.4;
+  }
+
+  .s-btn input {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .s-btn input:focus,
+  .s-btn input:hover {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  #main-container {
+    margin-top: 10%;
+  }
+
+  .heading {
+    width: 100%;
+    font-size: 1.1rem;
+  }
+
+  .s-btn input {
+    max-width: 100%;
+  }
+}
