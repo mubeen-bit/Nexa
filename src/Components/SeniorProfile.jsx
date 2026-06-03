@@ -52,6 +52,7 @@ export default function MentorshipPage() {
   }, [id]);
 
   const createOrder = async () => {
+    const API_URL = import.meta.env.VITE_API_URL;
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -61,14 +62,11 @@ export default function MentorshipPage() {
       return;
     }
 
-    const response = await fetch(
-      "http://localhost:9001/api/payment/create-order",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ seniorId: mentor.id }),
-      },
-    );
+    const response = await fetch(`${API_URL}/api/payment/create-order`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ seniorId: mentor.id }),
+    });
 
     const order = await response.json();
     console.log("FULL ORDER:", order);
@@ -85,7 +83,7 @@ export default function MentorshipPage() {
         console.log("PAYMENT SUCCESS", razorpayResponse);
 
         const verifyResponse = await fetch(
-          "http://localhost:9001/api/payment/verify-payment",
+          `${API_URL}/api/payment/verify-payment`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
