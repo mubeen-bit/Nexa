@@ -6,15 +6,13 @@ const Maincontainer = () => {
     <container id="main-container">
       <div className="heading">
         <h1>
-          Get Ahead with the right information and guidance from the right
-          senior.
+          Get Ahead with the right information and guidance from your senior.
         </h1>
       </div>
 
       <div className="para">
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas,
-          voluptate.
+          Choose from the verified seniors below and take the right next step.
         </p>
       </div>
       <div className="s-btn">

@@ -6,13 +6,6 @@ import Students from "./Students";
 import { useNavigate } from "react-router-dom";
 import LoginButton from "./LoginButton";
 
-const timezones = [
-  "(GMT+1:00) Edinburgh, London (BST)",
-  "(GMT+0:00) UTC",
-  "(GMT+5:30) Mumbai, New Delhi (IST)",
-  "(GMT-5:00) New York (EST)",
-];
-
 export default function MentorshipPage() {
   const { id } = useParams();
   const oldMentor = Students.find((student) => student.id === Number(id));
@@ -23,7 +16,7 @@ export default function MentorshipPage() {
   const [slots, setSlots] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
-  const [timezone, setTimezone] = useState(timezones[0]);
+
   const [testimonialPage, setTestimonialPage] = useState(0);
   const [booked, setBooked] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -58,7 +51,71 @@ export default function MentorshipPage() {
     loadData();
   }, [id]);
 
-  // Group slots by day label
+  const createOrder = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      setShowLogin(true);
+      return;
+    }
+
+    const response = await fetch(
+      "http://localhost:9001/api/payment/create-order",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ seniorId: mentor.id }),
+      },
+    );
+
+    const order = await response.json();
+    console.log("FULL ORDER:", order);
+
+    const options = {
+      key: "rzp_test_SxCjj9IimQvYfk",
+      amount: order.amount,
+      currency: order.currency,
+      order_id: order.id,
+      name: "SeniorJR",
+      description: "Mentorship Session",
+
+      handler: async function (razorpayResponse) {
+        console.log("PAYMENT SUCCESS", razorpayResponse);
+
+        const verifyResponse = await fetch(
+          "http://localhost:9001/api/payment/verify-payment",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            // ✅ explicit fields instead of ...response
+            body: JSON.stringify({
+              razorpay_order_id: razorpayResponse.razorpay_order_id,
+              razorpay_payment_id: razorpayResponse.razorpay_payment_id,
+              razorpay_signature: razorpayResponse.razorpay_signature,
+              juniorId: user.id,
+              seniorId: mentor.id,
+              availabilityId: selectedSlot.id,
+            }),
+          },
+        );
+
+        const result = await verifyResponse.json();
+        console.log("VERIFY RESULT", result);
+
+        if (result.success) {
+          setBooked(true);
+        } else {
+          alert(result.message);
+        }
+      },
+    };
+
+    const razorpay = new window.Razorpay(options);
+    razorpay.open();
+  };
+
   const slotsByDay = slots.reduce((acc, slot) => {
     const day = new Date(slot.start_time).toLocaleDateString("en-GB", {
       weekday: "short",
@@ -72,7 +129,6 @@ export default function MentorshipPage() {
 
   const days = Object.keys(slotsByDay);
 
-  // Auto-select first available day when slots load
   useEffect(() => {
     if (days.length > 0 && !selectedDay) {
       setSelectedDay(days[0]);
@@ -91,6 +147,7 @@ export default function MentorshipPage() {
     testimonialPage * testimonialsPerPage,
     testimonialPage * testimonialsPerPage + testimonialsPerPage,
   );
+
   const bookSession = async () => {
     if (!selectedSlot) {
       alert("Please select a slot");
@@ -106,35 +163,25 @@ export default function MentorshipPage() {
       return;
     }
 
-    const { error: bookingError } = await supabase.from("bookings").insert({
-      junior_id: user.id,
-      senior_id: Number(id),
-      availability_id: selectedSlot.id,
-    });
-
-    if (bookingError) {
-      console.error(bookingError);
-      return;
-    }
-
-    const { error: availabilityError } = await supabase
-      .from("availability")
-      .update({
-        is_booked: true,
-      })
-      .eq("id", selectedSlot.id);
-
-    if (availabilityError) {
-      console.error(availabilityError);
-      return;
-    }
-
-    setSlots((prev) => prev.filter((s) => s.id !== selectedSlot.id));
-    setBooked(true);
+    createOrder();
   };
 
   return (
     <div className="mentorship-page">
+      {/* ✅ popup at top level so it covers everything */}
+      {showLogin && (
+        <div className="popup-overlay" onClick={() => setShowLogin(false)}>
+          <div className="popup-box" onClick={(e) => e.stopPropagation()}>
+            <button className="popup-close" onClick={() => setShowLogin(false)}>
+              ✕
+            </button>
+            <h2>Sign in to continue</h2>
+            <p>Please log in to book a session with your mentor.</p>
+            <LoginButton />
+          </div>
+        </div>
+      )}
+
       {/* LEFT CARD */}
       <div className="card">
         <div className="card-header">
@@ -159,7 +206,7 @@ export default function MentorshipPage() {
 
         <div className="meta-row">
           <div className="meta-item">
-            <span>£</span>
+            <span>₹</span>
             <span>{mentor.price}</span>
           </div>
           <div className="meta-divider" />
@@ -173,7 +220,6 @@ export default function MentorshipPage() {
 
         <div className="section">
           <p>{mentor.description}</p>
-          {/* <p className="cta">[{mentor.cta}]</p> */}
         </div>
 
         <div className="section">
@@ -238,7 +284,6 @@ export default function MentorshipPage() {
           <>
             <h2>When should we meet?</h2>
 
-            {/* Day selector */}
             <div className="day-row">
               {days.map((day) => (
                 <button
@@ -276,43 +321,13 @@ export default function MentorshipPage() {
               </div>
             </div>
 
-            <div className="sub-section">
-              <p>Timezone</p>
-              <select
-                value={timezone}
-                onChange={(e) => setTimezone(e.target.value)}
-              >
-                {timezones.map((tz) => (
-                  <option key={tz}>{tz}</option>
-                ))}
-              </select>
-            </div>
-
             <button
               className="continue-btn"
               onClick={bookSession}
               disabled={!selectedSlot}
             >
-              Continue
+              Pay & Book Session
             </button>
-            {showLogin && (
-              <div
-                className="popup-overlay"
-                onClick={() => setShowLogin(false)}
-              >
-                <div className="popup-box" onClick={(e) => e.stopPropagation()}>
-                  <button
-                    className="popup-close"
-                    onClick={() => setShowLogin(false)}
-                  >
-                    ✕
-                  </button>
-                  <h2>Sign in to continue</h2>
-                  <p>Please log in to book a session with your mentor.</p>
-                  <LoginButton />
-                </div>
-              </div>
-            )}
           </>
         )}
       </div>
