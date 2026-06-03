@@ -4,7 +4,7 @@ import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 
-const Feature = ({ search }) => {
+const Feature = ({ search = "" }) => {
   const [seniors, setSeniors] = useState([]);
 
   useEffect(() => {
@@ -24,9 +24,9 @@ const Feature = ({ search }) => {
 
   const filteredSeniors = seniors.filter(
     (student) =>
-      student.college?.toLowerCase().includes(search.toLowerCase()) ||
-      student.name?.toLowerCase().includes(search.toLowerCase()) ||
-      student.company?.toLowerCase().includes(search.toLowerCase()),
+      (student.college ?? "").toLowerCase().includes(search.toLowerCase()) ||
+      (student.name ?? "").toLowerCase().includes(search.toLowerCase()) ||
+      (student.company ?? "").toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
