@@ -21,7 +21,7 @@ const Maincontainer = ({ search, setSearch }) => {
         <input
           type="text"
           name="college"
-          placeholder="Search for college.."
+          placeholder="Search by college or Senior name"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
