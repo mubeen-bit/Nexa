@@ -73,7 +73,7 @@ export default function MentorshipPage() {
     console.log("FULL ORDER:", order);
 
     const options = {
-      key: "rzp_test_SxCjj9IimQvYfk",
+      key: "rzp_live_Sxb5RpCsQQa7Bs",
       amount: order.amount,
       currency: order.currency,
       order_id: order.id,
