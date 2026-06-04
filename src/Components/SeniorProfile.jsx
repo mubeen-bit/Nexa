@@ -178,6 +178,7 @@ export default function MentorshipPage() {
             <p>Please log in to book a session with your mentor.</p>
             <LoginButton />
           </div>
+          <EmailLogin />
         </div>
       )}
 
@@ -327,10 +328,6 @@ export default function MentorshipPage() {
             >
               Pay & Book Session
             </button>
-
-            <hr />
-
-            <EmailLogin />
           </>
         )}
       </div>
