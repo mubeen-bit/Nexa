@@ -104,6 +104,9 @@ export default function MentorshipPage() {
         console.log("VERIFY RESULT", result);
 
         if (result.success) {
+          setSlots((prev) => prev.filter((s) => s.id !== selectedSlot.id));
+          setSelectedSlot(null);
+          setSelectedDay(null);
           setBooked(true);
         } else {
           alert(result.message);
@@ -112,6 +115,7 @@ export default function MentorshipPage() {
     };
 
     const razorpay = new window.Razorpay(options);
+
     razorpay.open();
   };
 
@@ -178,7 +182,6 @@ export default function MentorshipPage() {
             <p>Please log in to book a session with your mentor.</p>
             <LoginButton />
           </div>
-          <EmailLogin />
         </div>
       )}
 

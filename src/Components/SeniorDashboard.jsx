@@ -57,18 +57,19 @@ export default function SeniorDashboard() {
         .from("bookings")
         .select(
           `
-          *,
-          profiles!bookings_junior_id_fkey (
-            full_name,
-            email
-          ),
-          availability (
-            start_time,
-            end_time
-          )
-        `,
+    *,
+    profiles!bookings_junior_id_fkey (
+      full_name,
+      email
+    ),
+    availability (
+      start_time,
+      end_time
+    )
+  `,
         )
-        .eq("senior_id", senior.id);
+        .eq("senior_id", senior.id)
+        .order("booked_at", { ascending: false });
 
       console.log(data);
       console.log(error);
