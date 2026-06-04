@@ -9,13 +9,19 @@
 }
 
 .heading {
-  line-height: 1.4;
+  line-height: 1.3;
   color: #18230f;
   width: 60%;
+  font-weight: 700;
   text-align: center;
   font-size: 1.5rem;
   margin-bottom: 0;
   animation: blink 1s ease;
+}
+.para p {
+  font-size: 1rem;
+  color: #555;
+  margin-top: 8px;
 }
 
 @keyframes blink {

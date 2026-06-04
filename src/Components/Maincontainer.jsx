@@ -6,14 +6,14 @@ const Maincontainer = ({ search, setSearch }) => {
   return (
     <container id="main-container">
       <div className="heading">
-        <h1>
-          No more confusion about "How is this college?" — hear it straight from
-          your seniors and learn how to make the most of it.
-        </h1>
+        <h1>Your seniors have the answers.</h1>
       </div>
 
       <div className="para">
-        <p>Choose from the verified seniors and take the right next step.</p>
+        <p>
+          Book a 1:1 with a senior from your college. Get honest advice on
+          placements, internships, and college life.
+        </p>
       </div>
 
       <div className="s-btn">
