@@ -5,7 +5,6 @@ import { supabase } from "../lib/supabase";
 import Students from "./Students";
 import { useNavigate } from "react-router-dom";
 import LoginButton from "./LoginButton";
-import EmailLogin from "./EmailLogin";
 
 export default function MentorshipPage() {
   const { id } = useParams();
@@ -20,7 +19,7 @@ export default function MentorshipPage() {
 
   const [testimonialPage, setTestimonialPage] = useState(0);
   const [booked, setBooked] = useState(false);
-  const [showEmailLogin, setShowEmailLogin] = useState(false);
+
   const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
@@ -175,23 +174,11 @@ export default function MentorshipPage() {
             <button className="popup-close" onClick={() => setShowLogin(false)}>
               ✕
             </button>
-
             <h2>Sign in to continue</h2>
             <p>Please log in to book a session with your mentor.</p>
-
-            {/* Existing Login Button */}
             <LoginButton />
-
-            {/* Email Login Button */}
-            <button
-              className="email-login-btn"
-              onClick={() => setShowEmailLogin(!showEmailLogin)}
-            >
-              Continue with Email
-            </button>
-
-            {showEmailLogin && <EmailLogin />}
           </div>
+          <EmailLogin />
         </div>
       )}
 
