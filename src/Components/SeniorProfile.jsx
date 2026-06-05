@@ -74,7 +74,7 @@ export default function MentorshipPage() {
     console.log("FULL ORDER:", order);
 
     const options = {
-      key: "rzp_live_Sxb5RpCsQQa7Bs",
+      key: import.meta.env.VITE_RAZORPAY_KEY,
       amount: order.amount,
       currency: order.currency,
       order_id: order.id,
