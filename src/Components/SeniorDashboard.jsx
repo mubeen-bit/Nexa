@@ -70,6 +70,8 @@ export default function SeniorDashboard() {
         )
         .eq("senior_id", senior.id)
         .order("booked_at", { ascending: false });
+        console.log("TOTAL BOOKINGS:", data?.length);
+console.log(JSON.stringify(data, null, 2));
 
       console.log(data);
       console.log(error);

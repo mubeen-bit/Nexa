@@ -5,6 +5,7 @@ import LoginButton from "./LoginButton";
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import { useNavigate } from "react-router-dom";
+import EmailLogin from "./EmailLogin";
 
 const Header = () => {
   const [user, setUser] = useState(null);
@@ -83,6 +84,7 @@ const Header = () => {
           ) : (
             <div>
               <LoginButton />
+              <EmailLogin />
             </div>
           )}
         </div>
