@@ -5,6 +5,7 @@ import { supabase } from "../lib/supabase";
 import Students from "./Students";
 import { useNavigate } from "react-router-dom";
 import LoginButton from "./LoginButton";
+import EmailLogin from "./EmailLogin";
 
 export default function MentorshipPage() {
   const { id } = useParams();
@@ -181,6 +182,10 @@ export default function MentorshipPage() {
             <h2>Sign in to continue</h2>
             <p>Please log in to book a session with your mentor.</p>
             <LoginButton />
+            <div className="popup-divider">
+              <span>or</span>
+            </div>
+            <EmailLogin />
           </div>
         </div>
       )}
