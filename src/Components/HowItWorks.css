@@ -1,0 +1,65 @@
+/* HowItWorks.css */
+.hiw-wrap {
+  padding: 4rem 2rem;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hiw-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #18230f;
+  margin-bottom: 8px;
+}
+
+.hiw-sub {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 3rem;
+}
+
+.hiw-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+.hiw-step {
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  text-align: left;
+}
+
+.hiw-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #18230f;
+  opacity: 0.15;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.hiw-step h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #18230f;
+  margin: 0 0 8px;
+}
+
+.hiw-step p {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .hiw-wrap {
+    padding: 2rem 1rem;
+  }
+  .hiw-title {
+    font-size: 1.5rem;
+  }
+}

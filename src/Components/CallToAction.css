@@ -1,0 +1,47 @@
+/* CallToAction.css */
+.cta-wrap {
+  background: #18230f;
+  color: white;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.cta-wrap h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: white;
+}
+
+.cta-wrap p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 500px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+}
+
+.cta-btn {
+  display: inline-block;
+  background: white;
+  color: #18230f;
+  padding: 12px 28px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.cta-btn:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+  .cta-wrap {
+    padding: 2rem 1rem;
+  }
+  .cta-wrap h2 {
+    font-size: 1.5rem;
+  }
+}

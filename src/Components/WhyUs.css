@@ -1,0 +1,64 @@
+/* WhyUs.css */
+.why-wrap {
+  padding: 4rem 2rem;
+  background: #f9f9f6;
+  text-align: center;
+}
+
+.why-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #18230f;
+  margin-bottom: 8px;
+}
+
+.why-sub {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 3rem;
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.why-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  text-align: left;
+  border: 1px solid #eee;
+}
+
+.why-icon {
+  font-size: 1.8rem;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.why-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #18230f;
+  margin: 0 0 8px;
+}
+
+.why-card p {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .why-wrap {
+    padding: 2rem 1rem;
+  }
+  .why-title {
+    font-size: 1.5rem;
+  }
+}
