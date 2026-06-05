@@ -1,3 +1,9 @@
+import Header from "./Header";
+import Maincontainer from "./Maincontainer";
+import Feature from "./Feature";
+import Footer from "./Footer";
+import { useState } from "react";
+import LoginButton from "./LoginButton";
 import HowItWorks from "./HowItWorks";
 import WhyUs from "./WhyUs";
 import SocialProof from "./SocialProof";
@@ -19,3 +25,5 @@ function LandingPage() {
     </>
   );
 }
+
+export default LandingPage;
