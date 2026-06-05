@@ -1,6 +1,6 @@
 import React from "react";
 
-import logo from "../assets/srjr_1";
+import logo from "../assets/srjr_1.png";
 import "./Header.css";
 import LoginButton from "./LoginButton";
 import { useState, useEffect } from "react";
