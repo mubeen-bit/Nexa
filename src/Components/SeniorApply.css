@@ -1,0 +1,118 @@
+.sa-wrap {
+  max-width: 640px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  font-family: var(--font-sans, sans-serif);
+}
+
+.sa-card {
+  background: white;
+  border: 0.5px solid #eee;
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.sa-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #18230f;
+  margin: 0 0 8px;
+}
+
+.sa-sub {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 2rem;
+}
+
+.sa-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.sa-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.sa-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+}
+
+.sa-field input,
+.sa-field textarea {
+  padding: 10px 14px;
+  border: 0.5px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s ease;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.sa-field input:focus,
+.sa-field textarea:focus {
+  border-color: #18230f;
+}
+
+.sa-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.sa-btn {
+  padding: 12px;
+  background: #18230f;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.sa-btn:hover {
+  opacity: 0.85;
+}
+
+.sa-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sa-success {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.sa-success span {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.sa-success h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #18230f;
+  margin: 0 0 8px;
+}
+
+.sa-success p {
+  color: #666;
+  font-size: 14px;
+}
+
+@media (max-width: 480px) {
+  .sa-row {
+    grid-template-columns: 1fr;
+  }
+}

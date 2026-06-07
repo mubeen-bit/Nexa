@@ -104,6 +104,27 @@
   font-size: 15px;
   text-align: center;
 }
+.main-btn .btn-outline {
+  background: transparent;
+  color: #18230f;
+  border: 1.5px solid #18230f;
+}
+
+.main-btn .btn-outline:hover {
+  background: #18230f;
+  color: white;
+}
+
+.mobile-menu .btn-outline {
+  background: transparent;
+  color: #18230f;
+  border: 1.5px solid #18230f;
+}
+
+.mobile-menu .btn-outline:hover {
+  background: #18230f;
+  color: white;
+}
 
 @media (max-width: 768px) {
   .main-header {

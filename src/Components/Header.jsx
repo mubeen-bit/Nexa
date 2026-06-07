@@ -1,5 +1,4 @@
 import React from "react";
-
 import logo from "../assets/srjr_1.png";
 import "./Header.css";
 import LoginButton from "./LoginButton";
@@ -69,12 +68,19 @@ const Header = () => {
         <div>
           {user ? (
             <>
-              {isSenior && (
+              {isSenior ? (
                 <button
                   className="btn"
                   onClick={() => navigate("/senior-dashboard")}
                 >
                   Senior Dashboard
+                </button>
+              ) : (
+                <button
+                  className="btn btn-outline"
+                  onClick={() => navigate("/become-a-senior")}
+                >
+                  Become a Senior
                 </button>
               )}
               <button className="btn" onClick={() => navigate("/my-sessions")}>
@@ -83,6 +89,12 @@ const Header = () => {
             </>
           ) : (
             <div>
+              <button
+                className="btn btn-outline"
+                onClick={() => navigate("/become-a-senior")}
+              >
+                Become a Senior
+              </button>
               <LoginButton />
             </div>
           )}
@@ -104,7 +116,7 @@ const Header = () => {
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
         {user ? (
           <>
-            {isSenior && (
+            {isSenior ? (
               <button
                 className="btn"
                 onClick={() => {
@@ -113,6 +125,16 @@ const Header = () => {
                 }}
               >
                 Senior Dashboard
+              </button>
+            ) : (
+              <button
+                className="btn btn-outline"
+                onClick={() => {
+                  navigate("/become-a-senior");
+                  setMenuOpen(false);
+                }}
+              >
+                Become a Senior
               </button>
             )}
             <button
@@ -126,10 +148,22 @@ const Header = () => {
             </button>
           </>
         ) : (
-          <LoginButton />
+          <>
+            <button
+              className="btn btn-outline"
+              onClick={() => {
+                navigate("/become-a-senior");
+                setMenuOpen(false);
+              }}
+            >
+              Become a Senior
+            </button>
+            <LoginButton />
+          </>
         )}
       </div>
     </header>
   );
 };
+
 export default Header;

@@ -4,6 +4,7 @@ import LandingPage from "./Components/LandingPage";
 import SeniorProfile from "./Components/SeniorProfile";
 import MySessions from "./Components/Mysessions";
 import SeniorDashboard from "./Components/SeniorDashboard";
+import SeniorApply from "./Components/SeniorApply";
 
 function App() {
   const router = createBrowserRouter([
@@ -14,6 +15,10 @@ function App() {
     {
       path: "/senior/:id",
       element: <SeniorProfile />,
+    },
+    {
+      path: "/become-a-senior",
+      element: <SeniorApply />,
     },
     {
       path: "/my-sessions",
