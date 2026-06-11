@@ -203,11 +203,27 @@ export default function MentorshipPage() {
             <div className="rating-row">
               <span className="star">★</span>
               <span>{mentor.rating}</span>
-              <span className="badge">{mentor.tag}</span>
+              <span className="badge">{mentor.rating_tag}</span>
             </div>
             <h1 className="mentor-title">{mentor.service}</h1>
           </div>
-          <img src={mentor.avatar_url} alt="mentor" className="mentor-avatar" />
+          <div className="mentor-avatar-container">
+            {mentor.avatar_url ? (
+              <img
+                src={mentor.avatar_url}
+                alt={mentor.name}
+                className="mentor-avatar"
+              />
+            ) : (
+              <div className="avatar-placeholder">
+                {mentor.name
+                  ?.split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .toUpperCase()}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="divider" />
