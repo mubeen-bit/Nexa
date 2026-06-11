@@ -9,9 +9,9 @@ const Profile = (props) => {
         <FaExternalLinkAlt />
       </div>
       <h3>{props.name}</h3>
-      <p> {props.college}</p>
-      <p className="graduation">{props.classof}</p>
-      <p className="placed">{props.placed}</p>
+      <p> {props.title}</p>
+      <p className="graduation">{props.college}</p>
+      {props.placed && <p className="placed">{props.placed}</p>}
     </div>
   );
 };
