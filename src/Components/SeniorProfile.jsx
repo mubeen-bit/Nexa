@@ -205,7 +205,7 @@ export default function MentorshipPage() {
               <span>{mentor.rating}</span>
               <span className="badge">{mentor.tag}</span>
             </div>
-            <h1 className="mentor-title">{mentor.title}</h1>
+            <h1 className="mentor-title">{mentor.service}</h1>
           </div>
           <img src={mentor.avatar_url} alt="mentor" className="mentor-avatar" />
         </div>
