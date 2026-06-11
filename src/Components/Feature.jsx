@@ -48,7 +48,7 @@ const Feature = ({ search = "" }) => {
             <Profile
               name={student.name}
               college={student.college}
-              classof={student.class_of}
+              title={student.title}
               placed={student.company}
             />
           </Link>
