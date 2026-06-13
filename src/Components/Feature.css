@@ -40,6 +40,28 @@ p {
   border-radius: 10px;
   font-size: 13px;
 }
+.more-seniors {
+  text-align: center;
+  padding: 2rem 1rem;
+  border-top: 1px solid #eee;
+  margin-top: 1rem;
+}
+
+.more-seniors p {
+  font-size: 15px;
+  color: #444;
+  margin: 0 0 6px;
+}
+
+.more-seniors strong {
+  color: #18230f;
+}
+
+.more-hint {
+  font-size: 13px;
+  color: #888;
+  margin: 0 !important;
+}
 
 @media (max-width: 768px) {
   .profile {
