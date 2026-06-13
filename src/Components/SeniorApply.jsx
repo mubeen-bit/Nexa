@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import LoginButton from "./LoginButton";
+import { useNavigate } from "react-router-dom";
 import "./SeniorApply.css";
 
 export default function SeniorApply() {
   const [user, setUser] = useState(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [existingApplication, setExistingApplication] = useState(null);
   const [form, setForm] = useState({
     name: "",
     college: "",
@@ -22,6 +24,7 @@ export default function SeniorApply() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getUser = async () => {
@@ -29,6 +32,17 @@ export default function SeniorApply() {
         data: { user },
       } = await supabase.auth.getUser();
       setUser(user);
+
+      if (user) {
+        const { data } = await supabase
+          .from("senior_applications")
+          .select("status, created_at")
+          .eq("user_id", user.id)
+          .single();
+
+        if (data) setExistingApplication(data);
+      }
+
       setCheckingAuth(false);
     };
     getUser();
@@ -99,6 +113,7 @@ export default function SeniorApply() {
     setLoading(false);
   };
 
+  // loading
   if (checkingAuth) {
     return (
       <div className="sa-wrap">
@@ -107,6 +122,7 @@ export default function SeniorApply() {
     );
   }
 
+  // not logged in
   if (!user) {
     return (
       <div className="sa-wrap">
@@ -124,6 +140,48 @@ export default function SeniorApply() {
     );
   }
 
+  // already applied
+  if (existingApplication) {
+    return (
+      <div className="sa-wrap">
+        <div className="sa-card">
+          <div className="sa-success">
+            <span>
+              {existingApplication.status === "approved"
+                ? "✓"
+                : existingApplication.status === "rejected"
+                  ? "✕"
+                  : "⏳"}
+            </span>
+            <h2>
+              {existingApplication.status === "approved"
+                ? "You're approved!"
+                : existingApplication.status === "rejected"
+                  ? "Application not approved"
+                  : "Application under review"}
+            </h2>
+            <p>
+              {existingApplication.status === "approved"
+                ? "You can now access your Senior Dashboard to add your availability."
+                : existingApplication.status === "rejected"
+                  ? "Unfortunately your application was not approved. Contact us at hello@seniorjrtalks.com for more info."
+                  : "We'll review your profile and get back to you within 24 hours."}
+            </p>
+            {existingApplication.status === "approved" && (
+              <button
+                className="sa-btn"
+                onClick={() => navigate("/senior-dashboard")}
+              >
+                Go to Senior Dashboard
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // just submitted
   if (submitted) {
     return (
       <div className="sa-wrap">
@@ -252,7 +310,7 @@ export default function SeniorApply() {
               <input
                 name="price"
                 type="number"
-                placeholder="e.g. 299"
+                placeholder="e.g. 99"
                 value={form.price}
                 onChange={handleChange}
               />
