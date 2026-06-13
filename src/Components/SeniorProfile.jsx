@@ -17,11 +17,10 @@ export default function MentorshipPage() {
   const [slots, setSlots] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
-
   const [testimonialPage, setTestimonialPage] = useState(0);
   const [booked, setBooked] = useState(false);
-
   const [showLogin, setShowLogin] = useState(false);
+  const [slotError, setSlotError] = useState(false); // ✅ inline error state
 
   useEffect(() => {
     const loadData = async () => {
@@ -60,6 +59,8 @@ export default function MentorshipPage() {
     } = await supabase.auth.getUser();
 
     if (!user) {
+      // ✅ save current page before showing login
+      localStorage.setItem("redirectAfterLogin", window.location.pathname);
       setShowLogin(true);
       return;
     }
@@ -89,7 +90,6 @@ export default function MentorshipPage() {
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            // ✅ explicit fields instead of ...response
             body: JSON.stringify({
               razorpay_order_id: razorpayResponse.razorpay_order_id,
               razorpay_payment_id: razorpayResponse.razorpay_payment_id,
@@ -116,7 +116,6 @@ export default function MentorshipPage() {
     };
 
     const razorpay = new window.Razorpay(options);
-
     razorpay.open();
   };
 
@@ -154,15 +153,18 @@ export default function MentorshipPage() {
 
   const bookSession = async () => {
     if (!selectedSlot) {
-      alert("Please select a slot");
+      setSlotError(true); // ✅ show inline error
       return;
     }
+
+    setSlotError(false);
 
     const {
       data: { user },
     } = await supabase.auth.getUser();
 
     if (!user) {
+      localStorage.setItem("redirectAfterLogin", window.location.pathname);
       setShowLogin(true);
       return;
     }
@@ -172,7 +174,6 @@ export default function MentorshipPage() {
 
   return (
     <div className="mentorship-page">
-      {/* ✅ popup at top level so it covers everything */}
       {showLogin && (
         <div className="popup-overlay" onClick={() => setShowLogin(false)}>
           <div className="popup-box" onClick={(e) => e.stopPropagation()}>
@@ -329,7 +330,10 @@ export default function MentorshipPage() {
                 {visibleSlots.map((slot) => (
                   <button
                     key={slot.id}
-                    onClick={() => setSelectedSlot(slot)}
+                    onClick={() => {
+                      setSelectedSlot(slot);
+                      setSlotError(false); // ✅ clear error on select
+                    }}
                     className={
                       selectedSlot?.id === slot.id
                         ? "time-btn active"
@@ -343,13 +347,16 @@ export default function MentorshipPage() {
                   </button>
                 ))}
               </div>
+
+              {/* ✅ inline error message */}
+              {slotError && (
+                <p className="slot-error">
+                  Please select a time slot before continuing.
+                </p>
+              )}
             </div>
 
-            <button
-              className="continue-btn"
-              onClick={bookSession}
-              disabled={!selectedSlot}
-            >
+            <button className="continue-btn" onClick={bookSession}>
               Pay & Book Session
             </button>
           </>

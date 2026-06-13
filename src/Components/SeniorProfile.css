@@ -284,6 +284,19 @@ select {
   width: 100%;
   margin: 8px 0;
 }
+.slot-error {
+  font-size: 13px;
+  color: #e53e3e;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.slot-error::before {
+  content: "⚠️";
+  font-size: 12px;
+}
 
 .popup-divider::before,
 .popup-divider::after {
