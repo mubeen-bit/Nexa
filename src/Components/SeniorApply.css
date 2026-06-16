@@ -110,6 +110,27 @@
   color: #666;
   font-size: 14px;
 }
+.sa-login-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  background: #fef9ec;
+  border: 1px solid #f5d87a;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.sa-login-banner strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.sa-login-banner p {
+  margin: 0;
+  color: #555;
+}
 
 @media (max-width: 480px) {
   .sa-row {
