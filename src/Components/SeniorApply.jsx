@@ -4,45 +4,29 @@ import LoginButton from "./LoginButton";
 import { useNavigate } from "react-router-dom";
 import "./SeniorApply.css";
 
-const FORM_STORAGE_KEY = "seniorApplyDraft";
-
-const emptyForm = {
-  name: "",
-  college: "",
-  college_email: "",
-  linkedin: "",
-  year: "",
-  company: "",
-  title: "",
-  description: "",
-  help_with: "",
-  price: "",
-  duration: "",
-  tag: "",
-};
-
 export default function SeniorApply() {
   const [user, setUser] = useState(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [existingApplication, setExistingApplication] = useState(null);
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState({
+    name: "",
+    college: "",
+    college_email: "",
+    linkedin: "",
+    year: "",
+    company: "",
+    title: "",
+    description: "",
+    help_with: "",
+    price: "",
+    duration: "",
+    tag: "",
+  });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  // Show the login prompt inline (instead of replacing the whole form)
-  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const navigate = useNavigate();
 
-  // On mount: restore any saved draft, then resolve auth
   useEffect(() => {
-    const savedDraft = localStorage.getItem(FORM_STORAGE_KEY);
-    if (savedDraft) {
-      try {
-        setForm(JSON.parse(savedDraft));
-      } catch {
-        // ignore malformed saved data
-      }
-    }
-
     const getUser = async () => {
       const {
         data: { user },
@@ -50,9 +34,6 @@ export default function SeniorApply() {
       setUser(user);
 
       if (user) {
-        // Clear the draft once we know the user is logged in
-        localStorage.removeItem(FORM_STORAGE_KEY);
-
         const { data } = await supabase
           .from("senior_applications")
           .select("status, created_at")
@@ -64,30 +45,7 @@ export default function SeniorApply() {
 
       setCheckingAuth(false);
     };
-
     getUser();
-
-    // Listen for auth state changes — fires when the user completes Google OAuth
-    // and the tab/window regains focus with a valid session
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (session?.user) {
-        setUser(session.user);
-        setShowLoginPrompt(false);
-        localStorage.removeItem(FORM_STORAGE_KEY);
-
-        const { data } = await supabase
-          .from("senior_applications")
-          .select("status, created_at")
-          .eq("user_id", session.user.id)
-          .single();
-
-        if (data) setExistingApplication(data);
-      }
-    });
-
-    return () => subscription.unsubscribe();
   }, []);
 
   const handleChange = (e) => {
@@ -117,13 +75,6 @@ export default function SeniorApply() {
       return;
     }
 
-    // Not logged in yet — save draft and prompt for login
-    if (!user) {
-      localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(form));
-      setShowLoginPrompt(true);
-      return;
-    }
-
     setLoading(true);
 
     const { error } = await supabase.from("senior_applications").insert({
@@ -141,7 +92,7 @@ export default function SeniorApply() {
       return;
     }
 
-    // Notify admin
+    // notify admin
     await fetch(`${import.meta.env.VITE_API_URL}/api/notify/new-application`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -162,7 +113,7 @@ export default function SeniorApply() {
     setLoading(false);
   };
 
-  // ── Loading ──────────────────────────────────────────────────────────────
+  // loading
   if (checkingAuth) {
     return (
       <div className="sa-wrap">
@@ -171,7 +122,25 @@ export default function SeniorApply() {
     );
   }
 
-  // ── Already applied ──────────────────────────────────────────────────────
+  // not logged in
+  if (!user) {
+    return (
+      <div className="sa-wrap">
+        <div className="sa-card">
+          <div className="sa-login-prompt">
+            <span>🔒</span>
+            <h2>Sign in to apply</h2>
+            <p>
+              You need to be logged in with Google to apply as a senior mentor.
+            </p>
+            <LoginButton />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // already applied
   if (existingApplication) {
     return (
       <div className="sa-wrap">
@@ -212,7 +181,7 @@ export default function SeniorApply() {
     );
   }
 
-  // ── Just submitted ───────────────────────────────────────────────────────
+  // just submitted
   if (submitted) {
     return (
       <div className="sa-wrap">
@@ -230,7 +199,6 @@ export default function SeniorApply() {
     );
   }
 
-  // ── Main form ────────────────────────────────────────────────────────────
   return (
     <div className="sa-wrap">
       <div className="sa-card">
@@ -238,21 +206,6 @@ export default function SeniorApply() {
         <p className="sa-sub">
           Share your experience and help juniors from your college succeed.
         </p>
-
-        {/* Inline login prompt — shown after "Submit" is clicked without auth */}
-        {showLoginPrompt && (
-          <div className="sa-login-banner">
-            <span>🔒</span>
-            <div>
-              <strong>One last step — sign in to submit</strong>
-              <p>
-                Your answers are saved. Sign in with Google and your form will
-                be ready to submit right away.
-              </p>
-            </div>
-            <LoginButton />
-          </div>
-        )}
 
         <div className="sa-form">
           <div className="sa-field">
