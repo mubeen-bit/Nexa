@@ -227,7 +227,7 @@ export default function SeniorApply() {
             <div className="popup-divider">
               <span>or</span>
             </div>
-            <EmailLogin />
+            {/* <EmailLogin /> */}
           </div>
         </div>
       )}
