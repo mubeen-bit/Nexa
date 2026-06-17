@@ -14,6 +14,7 @@ export default function SeniorApply() {
     name: "",
     college: "",
     college_email: "",
+    whatsapp: "",
     linkedin: "",
     year: "",
     company: "",
@@ -29,7 +30,6 @@ export default function SeniorApply() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // restore form data if saved before login redirect
     const savedForm = localStorage.getItem("seniorApplyForm");
     if (savedForm) {
       setForm(JSON.parse(savedForm));
@@ -50,7 +50,6 @@ export default function SeniorApply() {
 
         if (data) setExistingApplication(data);
 
-        // if form was pending submission before login, close popup
         setShowLogin(false);
       }
 
@@ -68,6 +67,7 @@ export default function SeniorApply() {
       !form.name ||
       !form.college ||
       !form.college_email ||
+      !form.whatsapp ||
       !form.linkedin ||
       !form.year ||
       !form.description ||
@@ -83,6 +83,11 @@ export default function SeniorApply() {
       !form.college_email.includes(".edu")
     ) {
       alert("Please enter a valid college email (.ac.in or .edu)");
+      return false;
+    }
+
+    if (!/^\d{10,15}$/.test(form.whatsapp.replace(/[\s+\-]/g, ""))) {
+      alert("Please enter a valid WhatsApp number");
       return false;
     }
 
@@ -116,6 +121,7 @@ export default function SeniorApply() {
           name: form.name,
           college: form.college,
           college_email: form.college_email,
+          whatsapp: form.whatsapp,
           linkedin: form.linkedin,
           year: form.year,
           company: form.company,
@@ -137,8 +143,8 @@ export default function SeniorApply() {
     if (!validateForm()) return;
 
     if (!user) {
-      // save form so it's restored after login
       localStorage.setItem("seniorApplyForm", JSON.stringify(form));
+      localStorage.setItem("redirectAfterLogin", window.location.pathname);
       setShowLogin(true);
       return;
     }
@@ -154,7 +160,6 @@ export default function SeniorApply() {
     );
   }
 
-  // already applied
   if (existingApplication) {
     return (
       <div className="sa-wrap">
@@ -195,7 +200,6 @@ export default function SeniorApply() {
     );
   }
 
-  // just submitted
   if (submitted) {
     return (
       <div className="sa-wrap">
@@ -224,9 +228,7 @@ export default function SeniorApply() {
             <h2>Sign in to continue</h2>
             <p>Please log in to submit your application.</p>
             <LoginButton />
-            <div className="popup-divider">
-              <span>or</span>
-            </div>
+            <div className="popup-divider">{/* <span>or</span> */}</div>
             {/* <EmailLogin /> */}
           </div>
         </div>
@@ -283,14 +285,27 @@ export default function SeniorApply() {
             </div>
           </div>
 
-          <div className="sa-field">
-            <label>LinkedIn profile URL *</label>
-            <input
-              name="linkedin"
-              placeholder="https://linkedin.com/in/yourprofile"
-              value={form.linkedin}
-              onChange={handleChange}
-            />
+          <div className="sa-row">
+            <div className="sa-field">
+              <label>WhatsApp number *</label>
+              <input
+                name="whatsapp"
+                type="tel"
+                placeholder="e.g. +91 98765 43210"
+                value={form.whatsapp}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="sa-field">
+              <label>LinkedIn profile URL *</label>
+              <input
+                name="linkedin"
+                placeholder="https://linkedin.com/in/yourprofile"
+                value={form.linkedin}
+                onChange={handleChange}
+              />
+            </div>
           </div>
 
           <div className="sa-field">
