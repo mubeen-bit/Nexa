@@ -107,7 +107,13 @@ export default function SeniorApply() {
 
     if (error) {
       console.error(error);
-      alert("Something went wrong. Please try again.");
+      if (error.code === "23505") {
+        // unique constraint violation
+        alert("You've already submitted an application.");
+        setExistingApplication({ status: "pending" });
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
       setLoading(false);
       return;
     }
@@ -381,6 +387,9 @@ export default function SeniorApply() {
               value={form.tag}
               onChange={handleChange}
             />
+          </div>
+          <div className="sa-field">
+            <label>Please double Check details before submission</label>
           </div>
 
           <button className="sa-btn" onClick={handleSubmit} disabled={loading}>
