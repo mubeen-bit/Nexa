@@ -2,6 +2,7 @@ import React from "react";
 import logo from "../assets/srjr_1.png";
 import "./Header.css";
 import LoginButton from "./LoginButton";
+import LogoutButton from "./LogoutButton";
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import { useNavigate } from "react-router-dom";
@@ -86,6 +87,7 @@ const Header = () => {
               <button className="btn" onClick={() => navigate("/my-sessions")}>
                 My Sessions
               </button>
+              <LogoutButton />
             </>
           ) : (
             <div>
@@ -146,6 +148,7 @@ const Header = () => {
             >
               My Sessions
             </button>
+            <LogoutButton />
           </>
         ) : (
           <>

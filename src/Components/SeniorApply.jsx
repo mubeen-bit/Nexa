@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import LoginButton from "./LoginButton";
+import EmailLogin from "./EmailLogin";
 import { useNavigate } from "react-router-dom";
 import "./SeniorApply.css";
 
@@ -8,6 +9,7 @@ export default function SeniorApply() {
   const [user, setUser] = useState(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [existingApplication, setExistingApplication] = useState(null);
+  const [showLogin, setShowLogin] = useState(false);
   const [form, setForm] = useState({
     name: "",
     college: "",
@@ -27,6 +29,12 @@ export default function SeniorApply() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // restore form data if saved before login redirect
+    const savedForm = localStorage.getItem("seniorApplyForm");
+    if (savedForm) {
+      setForm(JSON.parse(savedForm));
+    }
+
     const getUser = async () => {
       const {
         data: { user },
@@ -41,6 +49,9 @@ export default function SeniorApply() {
           .single();
 
         if (data) setExistingApplication(data);
+
+        // if form was pending submission before login, close popup
+        setShowLogin(false);
       }
 
       setCheckingAuth(false);
@@ -52,7 +63,7 @@ export default function SeniorApply() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async () => {
+  const validateForm = () => {
     if (
       !form.name ||
       !form.college ||
@@ -64,7 +75,7 @@ export default function SeniorApply() {
       !form.price
     ) {
       alert("Please fill in all required fields.");
-      return;
+      return false;
     }
 
     if (
@@ -72,15 +83,19 @@ export default function SeniorApply() {
       !form.college_email.includes(".edu")
     ) {
       alert("Please enter a valid college email (.ac.in or .edu)");
-      return;
+      return false;
     }
 
+    return true;
+  };
+
+  const submitApplication = async (loggedInUser) => {
     setLoading(true);
 
     const { error } = await supabase.from("senior_applications").insert({
-      user_id: user.id,
-      email: user.email,
-      avatar_url: user.user_metadata.avatar_url,
+      user_id: loggedInUser.id,
+      email: loggedInUser.email,
+      avatar_url: loggedInUser.user_metadata.avatar_url,
       ...form,
       price: Number(form.price),
     });
@@ -92,50 +107,49 @@ export default function SeniorApply() {
       return;
     }
 
-    // notify admin
-    await fetch(`${import.meta.env.VITE_API_URL}/api/notify/new-application`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: form.name,
-        college: form.college,
-        college_email: form.college_email,
-        linkedin: form.linkedin,
-        year: form.year,
-        company: form.company,
-        title: form.title,
-        help_with: form.help_with,
-        email: user.email,
-      }),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/notify/new-application`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          college: form.college,
+          college_email: form.college_email,
+          linkedin: form.linkedin,
+          year: form.year,
+          company: form.company,
+          title: form.title,
+          help_with: form.help_with,
+          email: loggedInUser.email,
+        }),
+      },
+    );
 
+    console.log("Notify status:", response.status);
+
+    localStorage.removeItem("seniorApplyForm");
     setSubmitted(true);
     setLoading(false);
   };
 
-  // loading
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
+
+    if (!user) {
+      // save form so it's restored after login
+      localStorage.setItem("seniorApplyForm", JSON.stringify(form));
+      setShowLogin(true);
+      return;
+    }
+
+    submitApplication(user);
+  };
+
   if (checkingAuth) {
     return (
       <div className="sa-wrap">
         <p className="sa-loading">Loading...</p>
-      </div>
-    );
-  }
-
-  // not logged in
-  if (!user) {
-    return (
-      <div className="sa-wrap">
-        <div className="sa-card">
-          <div className="sa-login-prompt">
-            <span>🔒</span>
-            <h2>Sign in to apply</h2>
-            <p>
-              You need to be logged in with Google to apply as a senior mentor.
-            </p>
-            <LoginButton />
-          </div>
-        </div>
       </div>
     );
   }
@@ -201,6 +215,23 @@ export default function SeniorApply() {
 
   return (
     <div className="sa-wrap">
+      {showLogin && (
+        <div className="popup-overlay" onClick={() => setShowLogin(false)}>
+          <div className="popup-box" onClick={(e) => e.stopPropagation()}>
+            <button className="popup-close" onClick={() => setShowLogin(false)}>
+              ✕
+            </button>
+            <h2>Sign in to continue</h2>
+            <p>Please log in to submit your application.</p>
+            <LoginButton />
+            <div className="popup-divider">
+              <span>or</span>
+            </div>
+            <EmailLogin />
+          </div>
+        </div>
+      )}
+
       <div className="sa-card">
         <h1 className="sa-title">Become a senior mentor</h1>
         <p className="sa-sub">
