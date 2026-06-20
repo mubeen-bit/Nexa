@@ -7,11 +7,11 @@ export default function SeniorDashboard() {
   const [bookings, setBookings] = useState([]);
   const [meetLinks, setMeetLinks] = useState({});
   const [saved, setSaved] = useState({});
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Auth guard
   useEffect(() => {
-    const checkSenior = async () => {
+    const init = async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -21,60 +21,46 @@ export default function SeniorDashboard() {
         return;
       }
 
-      const { data: senior } = await supabase
+      const { data: senior, error: seniorError } = await supabase
         .from("seniors")
         .select("*")
         .eq("email", user.email)
         .single();
 
-      if (!senior) {
+      if (!senior || seniorError) {
+        console.error("Senior not found:", seniorError);
         navigate("/");
         return;
       }
-    };
 
-    checkSenior();
-  }, []);
-
-  // Load bookings
-  useEffect(() => {
-    const loadBookings = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) return;
-
-      const { data: senior } = await supabase
-        .from("seniors")
-        .select("*")
-        .eq("email", user.email)
-        .single();
-
-      if (!senior) return;
+      console.log("Senior found:", senior.id);
 
       const { data, error } = await supabase
         .from("bookings")
         .select(
           `
-    *,
-    profiles!bookings_junior_id_fkey (
-      full_name,
-      email
-    ),
-    availability (
-      start_time,
-      end_time
-    )
-  `,
+          *,
+          profiles!bookings_junior_id_fkey (
+            full_name,
+            email
+          ),
+          availability!bookings_availability_id_fkey (
+            start_time,
+            end_time
+          )
+        `,
         )
         .eq("senior_id", senior.id)
         .order("booked_at", { ascending: false });
-        console.log("TOTAL BOOKINGS:", data?.length);
-console.log(JSON.stringify(data, null, 2));
 
-      console.log(data);
-      console.log(error);
+      console.log("Bookings data:", data);
+      console.log("Bookings error:", error);
+
+      if (error) {
+        console.error("Failed to load bookings:", error);
+        setLoading(false);
+        return;
+      }
 
       setBookings(data || []);
 
@@ -83,9 +69,10 @@ console.log(JSON.stringify(data, null, 2));
         links[b.id] = b.meeting_link || "";
       });
       setMeetLinks(links);
+      setLoading(false);
     };
 
-    loadBookings();
+    init();
   }, []);
 
   const getInitials = (name) =>
@@ -114,6 +101,8 @@ console.log(JSON.stringify(data, null, 2));
     );
   };
 
+  if (loading) return <p>Loading...</p>;
+
   return (
     <div className="sd-wrap">
       <h1 className="sd-header">Senior dashboard</h1>
@@ -133,16 +122,18 @@ console.log(JSON.stringify(data, null, 2));
                 <p className="sd-email">{booking.profiles?.email}</p>
                 <p className="sd-time">
                   🗓{" "}
-                  {new Date(booking.availability.start_time).toLocaleString(
-                    "en-GB",
-                    {
-                      weekday: "short",
-                      day: "numeric",
-                      month: "short",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    },
-                  )}
+                  {booking.availability?.start_time
+                    ? new Date(booking.availability.start_time).toLocaleString(
+                        "en-GB",
+                        {
+                          weekday: "short",
+                          day: "numeric",
+                          month: "short",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        },
+                      )
+                    : "Time unavailable"}
                 </p>
               </div>
 
