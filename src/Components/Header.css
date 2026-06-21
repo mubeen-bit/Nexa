@@ -41,9 +41,13 @@
   padding: 0;
   align-items: center;
 }
+.main-btn > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
 .main-btn .btn {
-  margin: 5px;
   padding: 8px 16px;
   border: none;
   background: #18230f;
