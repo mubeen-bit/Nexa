@@ -23,6 +23,7 @@ const Maincontainer = ({ search, setSearch }) => {
           placeholder="Search by college or Senior"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          maxLength={100}
         />
         <i className="s-icon">
           <FaSearch />

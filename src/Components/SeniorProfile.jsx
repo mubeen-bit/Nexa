@@ -20,7 +20,7 @@ export default function MentorshipPage() {
   const [testimonialPage, setTestimonialPage] = useState(0);
   const [booked, setBooked] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-  const [slotError, setSlotError] = useState(false); // ✅ inline error state
+  const [slotError, setSlotError] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -54,25 +54,39 @@ export default function MentorshipPage() {
 
   const createOrder = async () => {
     const API_URL = import.meta.env.VITE_API_URL;
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
 
     if (!user) {
-      // ✅ save current page before showing login
       localStorage.setItem("redirectAfterLogin", window.location.pathname);
       setShowLogin(true);
       return;
     }
 
+    // ✅ get session token
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
     const response = await fetch(`${API_URL}/api/payment/create-order`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.access_token}`, // ✅
+      },
       body: JSON.stringify({ seniorId: mentor.id }),
     });
 
     const order = await response.json();
     console.log("FULL ORDER:", order);
+
+    if (!order.id) {
+      console.error("Order creation failed:", order);
+      alert("Something went wrong creating the order. Please try again.");
+      return;
+    }
 
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY,
@@ -89,14 +103,17 @@ export default function MentorshipPage() {
           `${API_URL}/api/payment/verify-payment`,
           {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session.access_token}`, // ✅
+            },
             body: JSON.stringify({
               razorpay_order_id: razorpayResponse.razorpay_order_id,
               razorpay_payment_id: razorpayResponse.razorpay_payment_id,
               razorpay_signature: razorpayResponse.razorpay_signature,
-              juniorId: user.id,
               seniorId: mentor.id,
               availabilityId: selectedSlot.id,
+              // ✅ juniorId removed — comes from JWT on backend
             }),
           },
         );
@@ -153,7 +170,7 @@ export default function MentorshipPage() {
 
   const bookSession = async () => {
     if (!selectedSlot) {
-      setSlotError(true); // ✅ show inline error
+      setSlotError(true);
       return;
     }
 
@@ -293,7 +310,8 @@ export default function MentorshipPage() {
             <p>
               Your session is confirmed for{" "}
               {selectedSlot &&
-                new Date(selectedSlot.start_time).toLocaleString("en-GB", {
+                new Date(selectedSlot.start_time).toLocaleString("en-IN", {
+                  timeZone: "Asia/Kolkata",
                   weekday: "long",
                   day: "numeric",
                   month: "long",
@@ -332,7 +350,7 @@ export default function MentorshipPage() {
                     key={slot.id}
                     onClick={() => {
                       setSelectedSlot(slot);
-                      setSlotError(false); // ✅ clear error on select
+                      setSlotError(false);
                     }}
                     className={
                       selectedSlot?.id === slot.id
@@ -348,7 +366,6 @@ export default function MentorshipPage() {
                 ))}
               </div>
 
-              {/* ✅ inline error message */}
               {slotError && (
                 <p className="slot-error">
                   Please select a time slot before continuing.
