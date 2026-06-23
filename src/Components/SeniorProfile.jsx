@@ -200,10 +200,8 @@ export default function MentorshipPage() {
             <h2>Sign in to continue</h2>
             <p>Please log in to book a session with your mentor.</p>
             <LoginButton />
-            <div className="popup-divider">
-              <span>or</span>
-            </div>
-            <EmailLogin />
+            <div className="popup-divider">{/* <span>or</span> */}</div>
+            {/* <EmailLogin /> */}
           </div>
         </div>
       )}
