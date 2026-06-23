@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import LoginButton from "./LoginButton";
-import EmailLogin from "./EmailLogin";
 import { useNavigate } from "react-router-dom";
 import "./SeniorApply.css";
 
@@ -31,9 +30,6 @@ export default function SeniorApply() {
 
   useEffect(() => {
     const savedForm = localStorage.getItem("seniorApplyForm");
-    if (savedForm) {
-      setForm(JSON.parse(savedForm));
-    }
 
     const getUser = async () => {
       const {
@@ -48,13 +44,27 @@ export default function SeniorApply() {
           .eq("user_id", user.id)
           .single();
 
-        if (data) setExistingApplication(data);
+        if (data) {
+          // already has an application
+          setExistingApplication(data);
+          localStorage.removeItem("seniorApplyForm");
+          localStorage.removeItem("redirectAfterLogin");
+        } else if (savedForm) {
+          // ✅ user just logged in and has saved form — auto submit
+          const parsedForm = JSON.parse(savedForm);
+          setForm(parsedForm);
+          submitApplication(user, parsedForm);
+        }
 
         setShowLogin(false);
+      } else if (savedForm) {
+        // not logged in but has saved form — restore it
+        setForm(JSON.parse(savedForm));
       }
 
       setCheckingAuth(false);
     };
+
     getUser();
   }, []);
 
@@ -93,21 +103,20 @@ export default function SeniorApply() {
     return true;
   };
 
-  const submitApplication = async (loggedInUser) => {
+  const submitApplication = async (loggedInUser, formData = form) => {
     setLoading(true);
 
     const { error } = await supabase.from("senior_applications").insert({
       user_id: loggedInUser.id,
       email: loggedInUser.email,
-      avatar_url: loggedInUser.user_metadata.avatar_url,
-      ...form,
-      price: Number(form.price),
+      avatar_url: loggedInUser.user_metadata?.avatar_url,
+      ...formData,
+      price: Number(formData.price),
     });
 
     if (error) {
       console.error(error);
       if (error.code === "23505") {
-        // unique constraint violation
         alert("You've already submitted an application.");
         setExistingApplication({ status: "pending" });
       } else {
@@ -117,29 +126,25 @@ export default function SeniorApply() {
       return;
     }
 
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/notify/new-application`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: form.name,
-          college: form.college,
-          college_email: form.college_email,
-          whatsapp: form.whatsapp,
-          linkedin: form.linkedin,
-          year: form.year,
-          company: form.company,
-          title: form.title,
-          help_with: form.help_with,
-          email: loggedInUser.email,
-        }),
-      },
-    );
-
-    console.log("Notify status:", response.status);
+    await fetch(`${import.meta.env.VITE_API_URL}/api/notify/new-application`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: formData.name,
+        college: formData.college,
+        college_email: formData.college_email,
+        whatsapp: formData.whatsapp,
+        linkedin: formData.linkedin,
+        year: formData.year,
+        company: formData.company,
+        title: formData.title,
+        help_with: formData.help_with,
+        email: loggedInUser.email,
+      }),
+    });
 
     localStorage.removeItem("seniorApplyForm");
+    localStorage.removeItem("redirectAfterLogin");
     setSubmitted(true);
     setLoading(false);
   };
@@ -157,10 +162,12 @@ export default function SeniorApply() {
     submitApplication(user);
   };
 
-  if (checkingAuth) {
+  if (checkingAuth || loading) {
     return (
       <div className="sa-wrap">
-        <p className="sa-loading">Loading...</p>
+        <p className="sa-loading">
+          {loading ? "Submitting your application..." : "Loading..."}
+        </p>
       </div>
     );
   }
@@ -233,8 +240,6 @@ export default function SeniorApply() {
             <h2>Sign in to continue</h2>
             <p>Please log in to submit your application.</p>
             <LoginButton />
-            <div className="popup-divider">{/* <span>or</span> */}</div>
-            {/* <EmailLogin /> */}
           </div>
         </div>
       )}
@@ -303,7 +308,7 @@ export default function SeniorApply() {
             </div>
 
             <div className="sa-field">
-              <label>LinkedIn profile URL </label>
+              <label>LinkedIn profile URL</label>
               <input
                 name="linkedin"
                 placeholder="https://linkedin.com/in/yourprofile"
@@ -387,8 +392,9 @@ export default function SeniorApply() {
               onChange={handleChange}
             />
           </div>
+
           <div className="sa-field">
-            <label>Please double Check details before submission</label>
+            <label>Please double check details before submission</label>
           </div>
 
           <button className="sa-btn" onClick={handleSubmit} disabled={loading}>

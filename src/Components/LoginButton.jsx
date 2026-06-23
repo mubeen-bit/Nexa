@@ -11,9 +11,6 @@ export default function LoginButton() {
         redirectTo: `${import.meta.env.VITE_SITE_URL}${redirectPath}`,
       },
     });
-
-    // clear after use
-    localStorage.removeItem("redirectAfterLogin");
   };
 
   return (
