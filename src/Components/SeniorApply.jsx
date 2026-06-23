@@ -68,7 +68,6 @@ export default function SeniorApply() {
       !form.college ||
       !form.college_email ||
       !form.whatsapp ||
-      !form.linkedin ||
       !form.year ||
       !form.description ||
       !form.help_with ||
@@ -304,7 +303,7 @@ export default function SeniorApply() {
             </div>
 
             <div className="sa-field">
-              <label>LinkedIn profile URL *</label>
+              <label>LinkedIn profile URL </label>
               <input
                 name="linkedin"
                 placeholder="https://linkedin.com/in/yourprofile"
