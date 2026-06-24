@@ -1,8 +1,13 @@
 import { supabase } from "../lib/supabase";
 import "./LoginButton.css";
 
-export default function LoginButton() {
+export default function LoginButton({ redirectTo = null }) {
   const signInWithGoogle = async () => {
+    // ✅ if redirectTo prop passed, save it
+    if (redirectTo) {
+      localStorage.setItem("redirectAfterLogin", redirectTo);
+    }
+
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {

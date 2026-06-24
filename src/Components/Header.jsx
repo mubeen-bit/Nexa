@@ -87,7 +87,7 @@ const Header = () => {
               <button className="btn" onClick={() => navigate("/my-sessions")}>
                 My Sessions
               </button>
-              <LogoutButton />
+              <LoginButton redirectTo={window.location.pathname} />
             </>
           ) : (
             <div>
@@ -97,7 +97,7 @@ const Header = () => {
               >
                 Become a Senior
               </button>
-              <LoginButton />
+              <LoginButton redirectTo={window.location.pathname} />
             </div>
           )}
         </div>
@@ -161,7 +161,7 @@ const Header = () => {
             >
               Become a Senior
             </button>
-            <LoginButton />
+            <LoginButton redirectTo={window.location.pathname} />
           </>
         )}
       </div>

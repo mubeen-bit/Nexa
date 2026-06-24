@@ -241,7 +241,7 @@ export default function SeniorApply() {
             </button>
             <h2>Sign in to continue</h2>
             <p>Please log in to submit your application.</p>
-            <LoginButton />
+            <LoginButton redirectTo={window.location.pathname} />
           </div>
         </div>
       )}
