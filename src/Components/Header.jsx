@@ -40,7 +40,7 @@ const Header = () => {
           .from("seniors")
           .select("*")
           .eq("email", userData.user.email)
-          .maybeSingle();
+          .single();
 
         if (seniorData) {
           setIsSenior(true);
@@ -87,7 +87,7 @@ const Header = () => {
               <button className="btn" onClick={() => navigate("/my-sessions")}>
                 My Sessions
               </button>
-              <LoginButton redirectTo={window.location.pathname} />
+              <LogoutButton />
             </>
           ) : (
             <div>
@@ -97,7 +97,7 @@ const Header = () => {
               >
                 Become a Senior
               </button>
-              <LoginButton redirectTo={window.location.pathname} />
+              <LoginButton />
             </div>
           )}
         </div>
@@ -161,7 +161,7 @@ const Header = () => {
             >
               Become a Senior
             </button>
-            <LoginButton redirectTo={window.location.pathname} />
+            <LoginButton />
           </>
         )}
       </div>
