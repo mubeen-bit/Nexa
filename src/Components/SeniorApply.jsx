@@ -42,7 +42,7 @@ export default function SeniorApply() {
           .from("senior_applications")
           .select("status, created_at")
           .eq("user_id", user.id)
-          .single();
+          .maybeSingle();
 
         if (data) {
           // already has an application
@@ -155,6 +155,8 @@ export default function SeniorApply() {
     if (!user) {
       localStorage.setItem("seniorApplyForm", JSON.stringify(form));
       localStorage.setItem("redirectAfterLogin", window.location.pathname);
+      console.log("SET redirectAfterLogin:", window.location.pathname); // ✅
+      console.log("VERIFY SET:", localStorage.getItem("redirectAfterLogin")); // ✅
       setShowLogin(true);
       return;
     }

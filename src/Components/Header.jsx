@@ -40,7 +40,7 @@ const Header = () => {
           .from("seniors")
           .select("*")
           .eq("email", userData.user.email)
-          .single();
+          .maybeSingle();
 
         if (seniorData) {
           setIsSenior(true);
