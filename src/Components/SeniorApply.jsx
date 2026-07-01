@@ -275,7 +275,10 @@ export default function SeniorApply() {
 
           <div className="sa-row">
             <div className="sa-field">
-              <label>College email *</label>
+              <label>
+                College email (Only for verification. Please login with your
+                personal mail id)*
+              </label>
               <input
                 name="college_email"
                 type="email"
