@@ -5,167 +5,164 @@ import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Header = () => {
   const [user, setUser] = useState(null);
-  const [Fletter, setFletter] = useState(null);
   const [isSenior, setIsSenior] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const checkUser = async () => {
-      const { data: userData, error } = await supabase.auth.getUser();
-
-      console.log("USER:", userData.user);
-      console.log("ERROR:", error);
+      const { data: userData } = await supabase.auth.getUser();
 
       if (userData.user) {
         setUser(userData.user);
-        setFletter(
-          userData.user.user_metadata.full_name?.charAt(0).toUpperCase(),
-        );
 
-        const { error: profileError } = await supabase.from("profiles").upsert({
+        await supabase.from("profiles").upsert({
           id: userData.user.id,
           email: userData.user.email,
           full_name: userData.user.user_metadata.full_name,
           avatar_url: userData.user.user_metadata.avatar_url,
         });
 
-        console.log("PROFILE ERROR:", profileError);
-
         const { data: seniorData } = await supabase
           .from("seniors")
           .select("*")
           .eq("email", userData.user.email)
-          .single();
+          .maybeSingle();
 
-        if (seniorData) {
-          setIsSenior(true);
-        }
+        if (seniorData) setIsSenior(true);
       }
-
-      const { data: sessionData } = await supabase.auth.getSession();
-      console.log("SESSION:", sessionData.session);
     };
 
     checkUser();
   }, []);
 
+  const isActive = (path) => location.pathname === path;
+  const avatar = user?.user_metadata?.avatar_url;
+  const initials = user?.user_metadata?.full_name?.charAt(0).toUpperCase();
+
+  const studentNav = [
+    { path: "/", label: "Home", icon: "⊞" },
+    { path: "/become-a-senior", label: "Become", icon: "✦" },
+    { path: "/my-sessions", label: "Sessions", icon: "◷" },
+  ];
+
+  const seniorNav = [
+    { path: "/", label: "Home", icon: "⊞" },
+    { path: "/my-sessions", label: "Sessions", icon: "◷" },
+    { path: "/senior-dashboard", label: "Dashboard", icon: "⊡" },
+  ];
+
+  const navItems = isSenior ? seniorNav : studentNav;
+
   return (
-    <header className="main-header">
-      <div className="main-logo">
-        <img src={logo} alt="Agency logo" />
-        <span className="logo-name">SeniorJRTalks</span>
-      </div>
+    <>
+      {/* ===== DESKTOP HEADER ===== */}
+      <header className="main-header">
+        <div className="main-logo" onClick={() => navigate("/")}>
+          <img src={logo} alt="Agency logo" />
+          <span className="logo-name">SeniorJRTalks</span>
+        </div>
 
-      <nav className="main-nav">
-        <ul></ul>
-      </nav>
+        <nav className="main-nav">
+          <ul></ul>
+        </nav>
 
-      <div className="main-btn">
-        <div>
-          {user ? (
-            <>
-              {isSenior ? (
+        <div className="main-btn">
+          <div>
+            {user ? (
+              <>
+                {isSenior ? (
+                  <button
+                    className="btn"
+                    onClick={() => navigate("/senior-dashboard")}
+                  >
+                    Senior Dashboard
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-outline"
+                    onClick={() => navigate("/become-a-senior")}
+                  >
+                    Become a Senior
+                  </button>
+                )}
                 <button
                   className="btn"
-                  onClick={() => navigate("/senior-dashboard")}
+                  onClick={() => navigate("/my-sessions")}
                 >
-                  Senior Dashboard
+                  My Sessions
                 </button>
-              ) : (
+                <LogoutButton />
+              </>
+            ) : (
+              <div>
                 <button
                   className="btn btn-outline"
                   onClick={() => navigate("/become-a-senior")}
                 >
                   Become a Senior
                 </button>
-              )}
-              <button className="btn" onClick={() => navigate("/my-sessions")}>
-                My Sessions
-              </button>
-              <LogoutButton />
-            </>
-          ) : (
-            <div>
-              <button
-                className="btn btn-outline"
-                onClick={() => navigate("/become-a-senior")}
-              >
-                Become a Senior
-              </button>
-              <LoginButton />
-            </div>
-          )}
+                <LoginButton redirectTo={window.location.pathname} />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </header>
 
-      {/* Hamburger — mobile only */}
-      <button
-        className="hamburger"
-        onClick={() => setMenuOpen((prev) => !prev)}
-        aria-label="Toggle menu"
-      >
-        <span />
-        <span />
-        <span />
-      </button>
-
-      {/* Mobile dropdown */}
-      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+      {/* ===== MOBILE BOTTOM NAV ===== */}
+      <nav className="bottom-nav">
         {user ? (
           <>
-            {isSenior ? (
+            {navItems.map((item) => (
               <button
-                className="btn"
-                onClick={() => {
-                  navigate("/senior-dashboard");
-                  setMenuOpen(false);
-                }}
+                key={item.path}
+                className={`bnav-item ${isActive(item.path) ? "active" : ""}`}
+                onClick={() => navigate(item.path)}
               >
-                Senior Dashboard
+                <span className="bnav-icon">{item.icon}</span>
+                <span className="bnav-label">{item.label}</span>
               </button>
-            ) : (
-              <button
-                className="btn btn-outline"
-                onClick={() => {
-                  navigate("/become-a-senior");
-                  setMenuOpen(false);
-                }}
-              >
-                Become a Senior
-              </button>
-            )}
-            <button
-              className="btn"
-              onClick={() => {
-                navigate("/my-sessions");
-                setMenuOpen(false);
-              }}
-            >
-              My Sessions
+            ))}
+
+            {/* Profile */}
+            <button className="bnav-item" onClick={() => navigate("/")}>
+              {avatar ? (
+                <img src={avatar} alt="profile" className="bnav-avatar" />
+              ) : (
+                <div className="bnav-initials">{initials}</div>
+              )}
+              <span className="bnav-label">Profile</span>
             </button>
-            <LogoutButton />
           </>
         ) : (
           <>
             <button
-              className="btn btn-outline"
-              onClick={() => {
-                navigate("/become-a-senior");
-                setMenuOpen(false);
-              }}
+              className={`bnav-item ${isActive("/") ? "active" : ""}`}
+              onClick={() => navigate("/")}
             >
-              Become a Senior
+              <span className="bnav-icon">⊞</span>
+              <span className="bnav-label">Home</span>
             </button>
-            <LoginButton />
+
+            <button
+              className={`bnav-item ${isActive("/become-a-senior") ? "active" : ""}`}
+              onClick={() => navigate("/become-a-senior")}
+            >
+              <span className="bnav-icon">✦</span>
+              <span className="bnav-label">Become</span>
+            </button>
+
+            <div className="bnav-item bnav-login">
+              <LoginButton redirectTo={window.location.pathname} />
+            </div>
           </>
         )}
-      </div>
-    </header>
+      </nav>
+    </>
   );
 };
 

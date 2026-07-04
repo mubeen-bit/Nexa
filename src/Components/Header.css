@@ -1,6 +1,9 @@
+/* ===== DESKTOP HEADER ===== */
 .main-header {
   display: flex;
-  font-family: Mona Sans;
+  font-family:
+    Mona Sans,
+    sans-serif;
   font-weight: 400;
   align-items: center;
   justify-content: space-between;
@@ -15,6 +18,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  cursor: pointer;
 }
 
 .logo-name {
@@ -41,6 +45,7 @@
   padding: 0;
   align-items: center;
 }
+
 .main-btn > div {
   display: flex;
   align-items: center;
@@ -54,60 +59,9 @@
   color: #fff;
   border-radius: 20px;
   cursor: pointer;
+  font-size: 14px;
 }
 
-/* Hamburger button — hidden on desktop */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  z-index: 100;
-}
-
-.hamburger span {
-  display: block;
-  width: 24px;
-  height: 2px;
-  background: #18230f;
-  border-radius: 2px;
-  transition: all 0.2s ease;
-}
-
-/* Mobile drawer */
-.mobile-menu {
-  display: none;
-  position: absolute;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border-top: 1px solid #eee;
-  padding: 1rem 1.5rem;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 99;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.mobile-menu.open {
-  display: flex;
-}
-
-.mobile-menu .btn {
-  width: 100%;
-  padding: 10px 16px;
-  border: none;
-  background: #18230f;
-  color: #fff;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 15px;
-  text-align: center;
-}
 .main-btn .btn-outline {
   background: transparent;
   color: #18230f;
@@ -119,15 +73,9 @@
   color: white;
 }
 
-.mobile-menu .btn-outline {
-  background: transparent;
-  color: #18230f;
-  border: 1.5px solid #18230f;
-}
-
-.mobile-menu .btn-outline:hover {
-  background: #18230f;
-  color: white;
+/* ===== MOBILE BOTTOM NAV ===== */
+.bottom-nav {
+  display: none;
 }
 
 @media (max-width: 768px) {
@@ -135,15 +83,95 @@
     padding: 10px 20px;
   }
 
-  .main-nav {
-    display: none;
-  }
-
   .main-btn {
     display: none;
   }
 
-  .hamburger {
+  .bottom-nav {
     display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.1);
+    padding: 10px 8px 24px;
+    z-index: 200;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 0.5px solid #eee;
+  }
+
+  .bnav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 14px;
+    min-width: 56px;
+    min-height: 52px;
+    transition: all 0.2s ease;
+    color: #999;
+    font-family:
+      Mona Sans,
+      sans-serif;
+  }
+
+  .bnav-item.active {
+    background: #f0f4ec;
+    color: #18230f;
+  }
+
+  .bnav-icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .bnav-label {
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .bnav-item.active .bnav-label {
+    color: #18230f;
+    font-weight: 600;
+  }
+
+  .bnav-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #18230f;
+  }
+
+  .bnav-initials {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #18230f;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .bnav-login .loginbtn {
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 16px;
+  }
+
+  /* padding so page content doesn't hide behind bottom nav */
+  #root {
+    padding-bottom: 84px;
   }
 }
