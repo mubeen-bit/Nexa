@@ -10,6 +10,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 const Header = () => {
   const [user, setUser] = useState(null);
   const [isSenior, setIsSenior] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -114,6 +115,7 @@ const Header = () => {
       </header>
 
       {/* ===== MOBILE BOTTOM NAV ===== */}
+      {/* ===== MOBILE BOTTOM NAV ===== */}
       <nav className="bottom-nav">
         {user ? (
           <>
@@ -128,15 +130,46 @@ const Header = () => {
               </button>
             ))}
 
-            {/* Profile */}
-            <button className="bnav-item" onClick={() => navigate("/")}>
-              {avatar ? (
-                <img src={avatar} alt="profile" className="bnav-avatar" />
-              ) : (
-                <div className="bnav-initials">{initials}</div>
+            {/* Profile with dropdown */}
+            <div className="bnav-profile-wrap">
+              {showProfileMenu && (
+                <>
+                  <div
+                    className="bnav-profile-backdrop"
+                    onClick={() => setShowProfileMenu(false)}
+                  />
+                  <div className="bnav-profile-dropdown">
+                    <p className="bnav-profile-name">
+                      {user?.user_metadata?.full_name}
+                    </p>
+                    <p className="bnav-profile-email">{user?.email}</p>
+                    <hr className="bnav-profile-divider" />
+                    <button
+                      className="bnav-profile-logout"
+                      onClick={async () => {
+                        await supabase.auth.signOut();
+                        navigate("/");
+                        window.location.reload();
+                      }}
+                    >
+                      Log out
+                    </button>
+                  </div>
+                </>
               )}
-              <span className="bnav-label">Profile</span>
-            </button>
+
+              <button
+                className="bnav-item"
+                onClick={() => setShowProfileMenu((prev) => !prev)}
+              >
+                {avatar ? (
+                  <img src={avatar} alt="profile" className="bnav-avatar" />
+                ) : (
+                  <div className="bnav-initials">{initials}</div>
+                )}
+                <span className="bnav-label">Profile</span>
+              </button>
+            </div>
           </>
         ) : (
           <>
