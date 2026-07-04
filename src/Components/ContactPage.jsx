@@ -1,5 +1,16 @@
 import "./ContactPage.css";
-import { FaWhatsapp, FaEnvelope } from "react-icons/fa";
+import {
+  FaWhatsapp,
+  FaEnvelope,
+  FaBolt,
+  FaGraduationCap,
+  FaLock,
+  FaUser,
+  FaShieldAlt,
+  FaRedo,
+  FaQuestionCircle,
+  FaMoneyBillWave,
+} from "react-icons/fa";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -20,7 +31,6 @@ export default function ContactPage() {
 
         {/* CONTACT CARDS */}
         <div className="contact-grid">
-          {/* Email */}
           <a
             href="mailto:learnwithmubeen.in@gmail.com"
             className="contact-card"
@@ -28,16 +38,13 @@ export default function ContactPage() {
             <div className="contact-card-icon email-icon">
               <FaEnvelope />
             </div>
-
             <h3>Email us</h3>
             <p>For general queries, partnerships, or feedback.</p>
-
             <span className="contact-card-link">
               learnwithmubeen.in@gmail.com
             </span>
           </a>
 
-          {/* WhatsApp */}
           <a
             href="https://wa.me/919100479247"
             target="_blank"
@@ -47,10 +54,8 @@ export default function ContactPage() {
             <div className="contact-card-icon whatsapp-icon">
               <FaWhatsapp />
             </div>
-
             <h3>WhatsApp us</h3>
             <p>Quick questions? Message us directly on WhatsApp.</p>
-
             <span className="contact-card-link">+91 91004 79247</span>
           </a>
         </div>
@@ -61,13 +66,17 @@ export default function ContactPage() {
 
           <div className="contact-trust-grid">
             <div className="contact-trust-item">
-              <span>⚡</span>
+              <div className="trust-icon">
+                <FaBolt />
+              </div>
               <h4>Fast responses</h4>
               <p>We reply within 24 hours on all channels.</p>
             </div>
 
             <div className="contact-trust-item">
-              <span>🎓</span>
+              <div className="trust-icon">
+                <FaGraduationCap />
+              </div>
               <h4>Senior onboarding</h4>
               <p>
                 Want to join as a senior mentor? We'll guide you through the
@@ -76,13 +85,17 @@ export default function ContactPage() {
             </div>
 
             <div className="contact-trust-item">
-              <span>🔒</span>
+              <div className="trust-icon">
+                <FaLock />
+              </div>
               <h4>Safe and private</h4>
               <p>Your details are never shared with third parties.</p>
             </div>
 
             <div className="contact-trust-item">
-              <span>💬</span>
+              <div className="trust-icon">
+                <FaUser />
+              </div>
               <h4>Real people</h4>
               <p>No bots, no automated replies. You talk to us directly.</p>
             </div>
@@ -95,36 +108,69 @@ export default function ContactPage() {
 
           <div className="contact-faq-list">
             <div className="contact-faq-item">
-              <h4>How do I become a senior mentor?</h4>
-              <p>
-                Click <strong>Become a Senior</strong> in the navigation, fill
-                out the application form, and we'll review it within 24 hours.
-              </p>
+              <div className="faq-icon">
+                <FaGraduationCap />
+              </div>
+              <div>
+                <h4>How do I become a senior mentor?</h4>
+                <p>
+                  Click <strong>Become a Senior</strong> in the navigation, fill
+                  out the application form, and we'll review it within 24 hours.
+                </p>
+              </div>
             </div>
 
             <div className="contact-faq-item">
-              <h4>Is my payment secure?</h4>
-              <p>
-                Yes — all payments are processed through Razorpay, a PCI-DSS
-                compliant payment gateway used by thousands of Indian
-                businesses.
-              </p>
+              <div className="faq-icon">
+                <FaShieldAlt />
+              </div>
+              <div>
+                <h4>Is my payment secure?</h4>
+                <p>
+                  Yes — all payments are processed through Razorpay, a PCI-DSS
+                  compliant payment gateway used by thousands of Indian
+                  businesses.
+                </p>
+              </div>
             </div>
 
             <div className="contact-faq-item">
-              <h4>What if my senior doesn't show up?</h4>
-              <p>
-                Contact us immediately on WhatsApp and we'll arrange a refund or
-                reschedule within 24 hours.
-              </p>
+              <div className="faq-icon">
+                <FaQuestionCircle />
+              </div>
+              <div>
+                <h4>What if my senior doesn't show up?</h4>
+                <p>
+                  Contact us immediately on WhatsApp and we'll arrange a refund
+                  or reschedule within 24 hours.
+                </p>
+              </div>
             </div>
 
             <div className="contact-faq-item">
-              <h4>Can I get a refund?</h4>
-              <p>
-                If a session is cancelled or the senior doesn't attend, we offer
-                a full refund. Reach out to us via email or WhatsApp.
-              </p>
+              <div className="faq-icon">
+                <FaMoneyBillWave />
+              </div>
+              <div>
+                <h4>Can I get a refund?</h4>
+                <p>
+                  If a session is cancelled or the senior doesn't attend, we
+                  offer a full refund. Reach out to us via email or WhatsApp.
+                </p>
+              </div>
+            </div>
+
+            <div className="contact-faq-item">
+              <div className="faq-icon">
+                <FaRedo />
+              </div>
+              <div>
+                <h4>Can I reschedule a session?</h4>
+                <p>
+                  Yes — contact us at least 12 hours before the session and
+                  we'll help you find a new time with your senior.
+                </p>
+              </div>
             </div>
           </div>
         </div>

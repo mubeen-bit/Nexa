@@ -7,7 +7,6 @@
     sans-serif;
 }
 
-/* HERO */
 .contact-hero {
   text-align: center;
   padding: 3rem 1rem 2rem;
@@ -28,7 +27,6 @@
   line-height: 1.7;
 }
 
-/* CONTACT CARDS */
 .contact-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -98,7 +96,6 @@
   margin-top: 4px;
 }
 
-/* TRUST */
 .contact-trust {
   background: #f9f9f6;
   border-radius: 16px;
@@ -122,19 +119,30 @@
 
 .contact-trust-item {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
-.contact-trust-item span {
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 8px;
+.trust-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #e8f0e5;
+  color: #18230f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 4px;
 }
 
 .contact-trust-item h4 {
   font-size: 14px;
   font-weight: 600;
   color: #18230f;
-  margin: 0 0 6px;
+  margin: 0;
 }
 
 .contact-trust-item p {
@@ -144,7 +152,6 @@
   line-height: 1.5;
 }
 
-/* FAQ */
 .contact-faq {
   margin: 2rem 0;
 }
@@ -167,6 +174,23 @@
   border: 0.5px solid #eee;
   border-radius: 12px;
   padding: 1.25rem 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.faq-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #e8f0e5;
+  color: #18230f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 .contact-faq-item h4 {
@@ -190,5 +214,10 @@
 
   .contact-trust {
     padding: 1.5rem 1rem;
+  }
+
+  .contact-faq-item {
+    flex-direction: column;
+    gap: 12px;
   }
 }
