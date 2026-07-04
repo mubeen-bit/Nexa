@@ -192,7 +192,6 @@ export default function MentorshipPage() {
 
   return (
     <div className="mentorship-page">
-      <Header />
       {showLogin && (
         <div className="popup-overlay" onClick={() => setShowLogin(false)}>
           <div className="popup-box" onClick={(e) => e.stopPropagation()}>
