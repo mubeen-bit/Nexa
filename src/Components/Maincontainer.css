@@ -76,14 +76,16 @@
   }
 
   .s-btn input {
-    width: 100%;
-    max-width: 280px;
+    width: 260px;
+    max-width: 260px;
+    font-size: 16px; /* ✅ prevents iOS auto-zoom */
   }
 
   .s-btn input:focus,
   .s-btn input:hover {
-    width: 100%;
-    max-width: 320px;
+    width: 260px; /* ✅ no expansion on mobile */
+    max-width: 260px;
+    outline: none;
   }
 }
 
@@ -97,7 +99,19 @@
     font-size: 1.1rem;
   }
 
+  .s-btn {
+    width: 85%;
+  }
+
   .s-btn input {
+    width: 100%;
+    max-width: 100%;
+    font-size: 16px; /* ✅ prevents iOS auto-zoom */
+  }
+
+  .s-btn input:focus,
+  .s-btn input:hover {
+    width: 100%; /* ✅ no expansion */
     max-width: 100%;
   }
 }
