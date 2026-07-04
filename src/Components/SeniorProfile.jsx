@@ -6,6 +6,7 @@ import Students from "./Students";
 import { useNavigate } from "react-router-dom";
 import LoginButton from "./LoginButton";
 import EmailLogin from "./EmailLogin";
+import Header from "./Header";
 
 export default function MentorshipPage() {
   const { id } = useParams();
@@ -190,6 +191,7 @@ export default function MentorshipPage() {
   };
 
   return (
+    <Header/>
     <div className="mentorship-page">
       {showLogin && (
         <div className="popup-overlay" onClick={() => setShowLogin(false)}>
