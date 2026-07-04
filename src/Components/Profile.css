@@ -1,13 +1,12 @@
 .content {
   position: relative;
-  align-items: left;
-  width: 300px;
-  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
   padding: 20px;
   background-color: white;
   border-radius: 10px;
   box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 20px;
+  margin: 0; /* ✅ remove margin */
   transition: transform 0.3s ease;
 }
 .link-icon {
