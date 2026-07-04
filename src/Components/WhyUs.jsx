@@ -33,7 +33,7 @@ export default function WhyUs() {
       <div className="why-grid">
         {reasons.map((r) => (
           <div className="why-card" key={r.title}>
-            <span className="why-icon">{r.icon}</span>
+            {/* <span className="why-icon">{r.icon}</span> */}
             <h3>{r.title}</h3>
             <p>{r.desc}</p>
           </div>

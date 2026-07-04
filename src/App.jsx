@@ -5,12 +5,17 @@ import SeniorProfile from "./Components/SeniorProfile";
 import MySessions from "./Components/Mysessions";
 import SeniorDashboard from "./Components/SeniorDashboard";
 import SeniorApply from "./Components/SeniorApply";
+import ContactPage from "./Components/ContactPage";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <LandingPage />,
+    },
+    {
+      path: "/contact",
+      element: <ContactPage />,
     },
     {
       path: "/senior/:id",
