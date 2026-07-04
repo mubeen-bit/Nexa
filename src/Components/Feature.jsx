@@ -4,23 +4,32 @@ import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 
+// ✅ outside component — persists between navigations in the same session
+let cachedSeniors = null;
+
 const Feature = ({ search = "" }) => {
-  const [seniors, setSeniors] = useState([]);
+  const [seniors, setSeniors] = useState(cachedSeniors || []);
+  const [loading, setLoading] = useState(!cachedSeniors);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
-    const loadSeniors = async () => {
-      const { data, error } = await supabase.from("seniors").select("*");
+    if (!cachedSeniors) {
+      const loadSeniors = async () => {
+        const { data, error } = await supabase.from("seniors").select("*");
 
-      if (error) {
-        console.error(error);
-        return;
-      }
+        if (error) {
+          console.error(error);
+          setLoading(false);
+          return;
+        }
 
-      setSeniors(data);
-    };
+        cachedSeniors = data; // ✅ save to cache
+        setSeniors(data);
+        setLoading(false);
+      };
 
-    loadSeniors();
+      loadSeniors();
+    }
 
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
@@ -37,6 +46,14 @@ const Feature = ({ search = "" }) => {
   const limit = search ? filteredSeniors.length : isMobile ? 7 : 10;
   const visibleSeniors = filteredSeniors.slice(0, limit);
   const hiddenCount = filteredSeniors.length - visibleSeniors.length;
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", padding: "3rem", color: "#888" }}>
+        Loading seniors...
+      </div>
+    );
+  }
 
   return (
     <div>

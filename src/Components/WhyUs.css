@@ -23,7 +23,7 @@
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
   max-width: 900px;
-  margin: 0 auto;
+  margin: 0 auto 3rem;
 }
 
 .why-card {
@@ -31,34 +31,148 @@
   padding: 1.5rem;
   border-radius: 16px;
   text-align: left;
-  border: 1px solid #eee;
+  border: 0.5px solid #eee;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.why-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
 }
 
 .why-icon {
-  font-size: 1.8rem;
-  display: block;
-  margin-bottom: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #e8f0e5;
+  color: #18230f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 14px;
 }
 
 .why-card h3 {
-  font-size: 1rem;
+  font-size: 15px;
   font-weight: 600;
   color: #18230f;
   margin: 0 0 8px;
 }
 
 .why-card p {
-  font-size: 0.9rem;
+  font-size: 13px;
   color: #666;
   line-height: 1.6;
   margin: 0;
 }
 
-@media (max-width: 600px) {
+/* CONTACT STRIP */
+.why-contact {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #18230f;
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  text-align: left;
+}
+
+.why-contact-text h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 8px;
+}
+
+.why-contact-text p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  max-width: 340px;
+  line-height: 1.6;
+}
+
+.why-contact-actions {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.why-contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  font-family:
+    Mona Sans,
+    sans-serif;
+  transition: opacity 0.2s ease;
+}
+
+.why-contact-btn:hover {
+  opacity: 0.85;
+}
+
+.why-contact-btn.whatsapp {
+  background: #25d366;
+  color: white;
+}
+
+.why-contact-btn.email {
+  background: white;
+  color: #18230f;
+}
+
+.why-contact-btn.outline {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 768px) {
+  .why-contact {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .why-contact-text p {
+    max-width: 100%;
+  }
+
+  .why-contact-actions {
+    justify-content: center;
+  }
+
+  .why-title {
+    font-size: 1.5rem;
+  }
+
   .why-wrap {
     padding: 2rem 1rem;
   }
-  .why-title {
-    font-size: 1.5rem;
+}
+
+@media (max-width: 480px) {
+  .why-contact-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .why-contact-actions {
+    width: 100%;
+    flex-direction: column;
   }
 }
