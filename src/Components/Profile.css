@@ -1,3 +1,4 @@
+/* ── BASE (mobile-first: 360px+) ── */
 .pc-card {
   position: relative;
   width: 100%;
@@ -5,17 +6,16 @@
   background: #ffffff;
   border-radius: 16px;
   border: 1px solid #e2e8f0;
-  padding: 20px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   cursor: pointer;
   height: 100%;
   transition:
     transform 220ms cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 220ms cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 220ms ease,
-    background 220ms ease;
+    border-color 220ms ease;
   box-shadow:
     0 2px 8px rgba(15, 23, 42, 0.05),
     0 1px 2px rgba(15, 23, 42, 0.04);
@@ -23,41 +23,18 @@
     "Inter",
     -apple-system,
     sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.pc-card:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    0 20px 40px rgba(15, 23, 42, 0.1),
-    0 4px 12px rgba(15, 23, 42, 0.06);
-  border-color: #cbd5e1;
-  background: #fafcff;
-}
-
-.pc-card:hover .pc-arrow {
-  opacity: 1;
-  transform: translate(2px, -2px);
-  color: #2563eb;
-}
-
-.pc-card:hover .pc-cta {
-  color: #1d4ed8;
-}
-
-.pc-card:hover .pc-cta-arrow {
-  transform: translate(2px, -2px);
-}
-
-.pc-card:hover .pc-skill {
-  background: #eff6ff;
-  color: #2563eb;
-  border-color: #bfdbfe;
+.pc-card:active {
+  transform: scale(0.99);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
 }
 
 /* ── HEADER ── */
 .pc-header {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   align-items: flex-start;
 }
 
@@ -67,18 +44,18 @@
 }
 
 .pc-avatar {
-  width: 64px;
-  height: 64px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #e2e8f0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   display: block;
 }
 
 .pc-avatar-initials {
-  width: 64px;
-  height: 64px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: #eff6ff;
   color: #2563eb;
@@ -86,18 +63,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.1);
   letter-spacing: -0.5px;
+  flex-shrink: 0;
 }
 
 .pc-verified-dot {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 20px;
-  height: 20px;
+  bottom: -1px;
+  right: -1px;
+  width: 18px;
+  height: 18px;
   background: white;
   border-radius: 50%;
   border: 1.5px solid #e2e8f0;
@@ -111,18 +89,18 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .pc-name-row {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
 }
 
 .pc-name {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: #0f172a;
   margin: 0;
@@ -130,6 +108,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: calc(100% - 24px);
 }
 
 .pc-arrow {
@@ -144,7 +123,7 @@
 }
 
 .pc-role {
-  font-size: 13px;
+  font-size: 12px;
   color: #64748b;
   margin: 0;
   line-height: 1.4;
@@ -156,9 +135,10 @@
 .pc-meta-item {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 12px;
+  gap: 4px;
+  font-size: 11px;
   color: #94a3b8;
+  min-width: 0;
 }
 
 .pc-meta-item svg {
@@ -176,39 +156,42 @@
 .pc-trust {
   display: flex;
   align-items: center;
-  gap: 8px;
 }
 
 .pc-verified-badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   font-size: 11px;
   font-weight: 500;
   color: #1d4ed8;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
-  padding: 3px 10px;
+  padding: 3px 9px;
   border-radius: 20px;
 }
 
 /* ── SKILLS ── */
 .pc-skills {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 5px;
+  overflow: hidden;
 }
 
 .pc-skill {
   font-size: 11px;
   font-weight: 500;
-  padding: 3px 10px;
+  padding: 3px 9px;
   border-radius: 20px;
   background: #f1f5f9;
   color: #475569;
   border: 1px solid #e2e8f0;
-  transition: all 200ms ease;
   white-space: nowrap;
+  flex-shrink: 0;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
 }
 
 .pc-skill-more {
@@ -222,29 +205,34 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid #f1f5f9;
   margin-top: auto;
-  gap: 8px;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .pc-footer-meta {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
+  min-width: 0;
 }
 
 .pc-footer-item {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 12px;
+  font-size: 11px;
   color: #64748b;
   font-weight: 500;
+  min-height: 24px;
 }
+
 .pc-footer-item svg {
   color: #94a3b8;
+  flex-shrink: 0;
 }
 
 .pc-available {
@@ -263,9 +251,115 @@
   color: #2563eb;
   white-space: nowrap;
   flex-shrink: 0;
+  min-height: 44px;
+  padding: 0 2px;
   transition: color 200ms ease;
 }
 
 .pc-cta-arrow {
   transition: transform 200ms ease;
+}
+
+/* ── TABLET (768px+) ── */
+@media (min-width: 768px) {
+  .pc-card {
+    padding: 18px;
+    gap: 13px;
+    border-radius: 16px;
+  }
+
+  .pc-avatar {
+    width: 58px;
+    height: 58px;
+  }
+  .pc-avatar-initials {
+    width: 58px;
+    height: 58px;
+    font-size: 18px;
+  }
+
+  .pc-name {
+    font-size: 15px;
+  }
+  .pc-role {
+    font-size: 13px;
+  }
+  .pc-meta-item {
+    font-size: 12px;
+  }
+  .pc-skill {
+    font-size: 11px;
+  }
+  .pc-footer-item {
+    font-size: 12px;
+  }
+  .pc-cta {
+    font-size: 13px;
+  }
+
+  .pc-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 20px 40px rgba(15, 23, 42, 0.1),
+      0 4px 12px rgba(15, 23, 42, 0.06);
+    border-color: #cbd5e1;
+    background: #fafcff;
+  }
+
+  .pc-card:hover .pc-arrow {
+    opacity: 1;
+    transform: translate(2px, -2px);
+    color: #2563eb;
+  }
+
+  .pc-card:hover .pc-cta {
+    color: #1d4ed8;
+  }
+  .pc-card:hover .pc-cta-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  .pc-card:hover .pc-skill {
+    background: #eff6ff;
+    color: #2563eb;
+    border-color: #bfdbfe;
+  }
+}
+
+/* ── DESKTOP (1024px+) ── */
+@media (min-width: 1024px) {
+  .pc-card {
+    padding: 20px;
+    gap: 14px;
+  }
+
+  .pc-avatar {
+    width: 64px;
+    height: 64px;
+  }
+  .pc-avatar-initials {
+    width: 64px;
+    height: 64px;
+    font-size: 20px;
+  }
+  .pc-verified-dot {
+    width: 20px;
+    height: 20px;
+  }
+
+  .pc-name {
+    font-size: 16px;
+  }
+  .pc-role {
+    font-size: 13px;
+  }
+  .pc-meta-item {
+    font-size: 12px;
+  }
+  .pc-footer-item {
+    font-size: 12px;
+  }
+  .pc-cta {
+    font-size: 12px;
+  }
 }
