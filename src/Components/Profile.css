@@ -2,6 +2,7 @@
 .pc-card {
   position: relative;
   width: 100%;
+  min-width: 0;
   box-sizing: border-box;
   background: #ffffff;
   border-radius: 16px;

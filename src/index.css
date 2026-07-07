@@ -26,7 +26,9 @@
   box-sizing: border-box;
 } */
 html,
-body {
+body,
+#root {
   overflow-x: hidden;
   width: 100%;
+  max-width: 100%;
 }
