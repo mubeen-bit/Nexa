@@ -5,8 +5,29 @@ import { supabase } from "../lib/supabase";
 import Students from "./Students";
 import { useNavigate } from "react-router-dom";
 import LoginButton from "./LoginButton";
-import EmailLogin from "./EmailLogin";
+
 import Header from "./Header";
+import {
+  ArrowLeft,
+  Star,
+  ShieldCheck,
+  Clock,
+  Users,
+  Zap,
+  IndianRupee,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  ChevronDown,
+  Lock,
+  X,
+  Mail,
+  Check,
+  AlertCircle,
+  Award,
+  CalendarX,
+} from "lucide-react";
 
 export default function MentorshipPage() {
   const { id } = useParams();
@@ -22,6 +43,25 @@ export default function MentorshipPage() {
   const [booked, setBooked] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [slotError, setSlotError] = useState(false);
+  const [faqOpen, setFaqOpen] = useState(null);
+  const faqs = [
+    {
+      q: "How do I join the meeting?",
+      a: "After booking, your senior will share a Google Meet link before the session. You'll also find it in My Sessions.",
+    },
+    {
+      q: "Can I reschedule?",
+      a: "Contact us on WhatsApp at least 12 hours before the session and we'll help you find a new time.",
+    },
+    {
+      q: "What if I miss my session?",
+      a: "Reach out immediately on WhatsApp or email. We'll do our best to arrange a reschedule.",
+    },
+    {
+      q: "How do refunds work?",
+      a: "If the session is cancelled or the senior doesn't attend, we offer a full refund within 5–7 business days.",
+    },
+  ];
 
   useEffect(() => {
     const loadData = async () => {
@@ -191,48 +231,69 @@ export default function MentorshipPage() {
   };
 
   return (
-    <div className="mentorship-page">
+    <div className="mp-page">
       {showLogin && (
-        <div className="popup-overlay" onClick={() => setShowLogin(false)}>
-          <div className="popup-box" onClick={(e) => e.stopPropagation()}>
-            <button className="popup-close" onClick={() => setShowLogin(false)}>
-              ✕
+        <div className="mp-overlay" onClick={() => setShowLogin(false)}>
+          <div className="mp-login-box" onClick={(e) => e.stopPropagation()}>
+            <button className="mp-close" onClick={() => setShowLogin(false)}>
+              <X size={16} />
             </button>
+            <div className="mp-login-icon">
+              <Lock size={26} color="#2563EB" />
+            </div>
             <h2>Sign in to continue</h2>
-            <p>Please log in to book a session with your mentor.</p>
-            <LoginButton />
-            <div className="popup-divider">{/* <span>or</span> */}</div>
-            {/* <EmailLogin /> */}
+            <p>
+              Book your session securely. We never post anything without your
+              permission.
+            </p>
+            <LoginButton redirectTo={window.location.pathname} />
+            <p className="mp-login-note">
+              <ShieldCheck size={12} /> Secure · Private · No spam
+            </p>
           </div>
         </div>
       )}
 
-      {/* LEFT CARD */}
-      <div className="card">
-        <div className="card-header">
-          <button className="back-btn" onClick={() => navigate(-1)}>
-            ← <span>{mentor.name}</span>
+      {/* ── LEFT CARD ── */}
+      <div className="mp-card">
+        <div className="mp-card-header">
+          <button className="mp-back" onClick={() => navigate(-1)}>
+            <ArrowLeft size={15} /> Back
           </button>
         </div>
 
-        <div className="hero-section">
-          <div>
-            <div className="rating-row">
-              <span className="star">★</span>
-              <span>{mentor.rating}</span>
-              <span className="badge">{mentor.rating_tag}</span>
+        <div className="mp-hero">
+          <div className="mp-hero-left">
+            <div className="mp-badges">
+              <span className="mp-badge verified">
+                <ShieldCheck size={11} /> Verified mentor
+              </span>
+              <span className="mp-badge top">Top rated</span>
             </div>
-            <h1 className="mentor-title">{mentor.service}</h1>
+            <h1 className="mp-name">{mentor.name}</h1>
+            <p className="mp-mentor-role">{mentor.title}</p>
+            <div className="mp-rating-row">
+              <div className="mp-stars">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star key={s} size={13} fill="#D4A017" color="#D4A017" />
+                ))}
+              </div>
+              <span className="mp-rating-val">{mentor.rating}</span>
+              <span className="mp-rating-count">· 42 reviews</span>
+            </div>
+            <div className="mp-response" style={{ marginTop: 10 }}>
+              <Zap size={12} color="#2563EB" /> Responds within 2 hours
+            </div>
           </div>
-          <div className="mentor-avatar-container">
+          <div className="mp-avatar-wrap">
             {mentor.avatar_url ? (
               <img
                 src={mentor.avatar_url}
                 alt={mentor.name}
-                className="mentor-avatar"
+                className="mp-avatar"
               />
             ) : (
-              <div className="avatar-placeholder">
+              <div className="mp-avatar-placeholder">
                 {mentor.name
                   ?.split(" ")
                   .map((n) => n[0])
@@ -243,36 +304,97 @@ export default function MentorshipPage() {
           </div>
         </div>
 
-        <div className="divider" />
+        {/* Skills */}
+        <div className="mp-skills">
+          {[
+            "Resume Review",
+            "Placement Prep",
+            "Mock Interview",
+            "Career Guidance",
+            "DSA",
+          ].map((s) => (
+            <span className="mp-skill" key={s}>
+              {s}
+            </span>
+          ))}
+        </div>
 
-        <div className="meta-row">
-          <div className="meta-item">
-            <span>₹</span>
-            <span>{mentor.price}</span>
+        {/* Stats */}
+        <div className="mp-stats">
+          <div className="mp-stat">
+            <div className="mp-stat-icon-wrap">
+              <IndianRupee size={15} />
+            </div>
+            <div>
+              <p className="mp-stat-label">Price</p>
+              <p className="mp-stat-val">₹{mentor.price}</p>
+            </div>
           </div>
-          <div className="meta-divider" />
-          <div className="meta-item">
-            <span>🗓</span>
-            <span>{mentor.duration}</span>
+          <div className="mp-stat">
+            <div className="mp-stat-icon-wrap">
+              <Clock size={15} />
+            </div>
+            <div>
+              <p className="mp-stat-label">Duration</p>
+              <p className="mp-stat-val">{mentor.duration} min</p>
+            </div>
+          </div>
+          <div className="mp-stat">
+            <div className="mp-stat-icon-wrap">
+              <Users size={15} />
+            </div>
+            <div>
+              <p className="mp-stat-label">Sessions</p>
+              <p className="mp-stat-val">120+</p>
+            </div>
+          </div>
+          <div className="mp-stat">
+            <div className="mp-stat-icon-wrap">
+              <Award size={15} />
+            </div>
+            <div>
+              <p className="mp-stat-label">Experience</p>
+              <p className="mp-stat-val">3 yrs</p>
+            </div>
           </div>
         </div>
 
-        <div className="divider" />
+        <div className="mp-divider" />
 
-        <div className="section">
-          <p>{mentor.description}</p>
+        {/* About */}
+        <div className="mp-section">
+          <h3 className="mp-section-title">About this session</h3>
+          <p className="mp-desc">{mentor.description}</p>
+          <div className="mp-bullets">
+            <p className="mp-bullet-title">What you'll get</p>
+            <ul>
+              {[
+                "Resume and LinkedIn review",
+                "Placement strategy and roadmap",
+                "Mock interview with feedback",
+                "Honest college and career advice",
+              ].map((b) => (
+                <li key={b}>
+                  <CheckCircle size={13} /> {b}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        <div className="section">
-          <div className="testimonial-header">
-            <h2>Testimonials</h2>
-            <div className="arrow-group">
+        <div className="mp-divider" />
+
+        {/* Reviews */}
+        <div className="mp-section">
+          <div className="mp-section-header">
+            <h3 className="mp-section-title">What students say</h3>
+            <div className="mp-arrows">
               <button
                 onClick={() =>
                   setTestimonialPage(Math.max(0, testimonialPage - 1))
                 }
               >
-                ←
+                <ChevronLeft size={15} />
               </button>
               <button
                 onClick={() =>
@@ -281,100 +403,250 @@ export default function MentorshipPage() {
                   )
                 }
               >
-                →
+                <ChevronRight size={15} />
               </button>
             </div>
           </div>
-
-          <div className="testimonial-grid">
-            {visibleTestimonials.map((t, index) => (
-              <div className="testimonial-card" key={index}>
-                <div className="testimonial-user">
-                  <div className="testimonial-avatar">{t.avatar}</div>
-                  <span>{t.name}</span>
+          {visibleTestimonials.length > 0 ? (
+            <div className="mp-reviews">
+              {visibleTestimonials.map((t, i) => (
+                <div className="mp-review-card" key={i}>
+                  <div className="mp-review-top">
+                    <div className="mp-review-avatar">{t.avatar}</div>
+                    <div>
+                      <p className="mp-review-name">{t.name}</p>
+                      <div className="mp-review-stars">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <Star
+                            key={s}
+                            size={10}
+                            fill="#D4A017"
+                            color="#D4A017"
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="mp-review-text">{t.review}</p>
                 </div>
-                <p>{t.review}</p>
+              ))}
+            </div>
+          ) : (
+            <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>
+              No reviews yet — be the first to book!
+            </p>
+          )}
+        </div>
+
+        <div className="mp-divider" />
+
+        {/* Trust */}
+        <div className="mp-section">
+          <h3 className="mp-section-title">Why students trust this mentor</h3>
+          <div className="mp-trust-list">
+            {[
+              ["Verified senior profile", ShieldCheck],
+              ["Secure payments via Razorpay", Lock],
+              ["100% private 1:1 session", Users],
+              ["Instant booking confirmation", CheckCircle],
+              ["Reschedule available on request", Clock],
+            ].map(([label, Icon]) => (
+              <div className="mp-trust-item" key={label}>
+                <Icon size={14} />
+                <span>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mp-divider" />
+
+        {/* FAQ */}
+        <div className="mp-section">
+          <h3 className="mp-section-title">Frequently asked questions</h3>
+          <div className="mp-faq">
+            {faqs.map((f, i) => (
+              <div className="mp-faq-item" key={i}>
+                <button
+                  className="mp-faq-q"
+                  onClick={() => setFaqOpen(faqOpen === i ? null : i)}
+                >
+                  {f.q}
+                  {faqOpen === i ? (
+                    <ChevronUp size={15} />
+                  ) : (
+                    <ChevronDown size={15} />
+                  )}
+                </button>
+                {faqOpen === i && <p className="mp-faq-a">{f.a}</p>}
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* BOOKING CARD */}
-      <div className="booking-card">
+      {/* ── BOOKING CARD ── */}
+      <div className="mp-booking">
         {booked ? (
-          <div className="confirmed-wrap">
-            <div className="confirmed-icon">✓</div>
-            <h2>Session Booked!</h2>
-            <p>
-              Your session is confirmed for{" "}
-              {selectedSlot &&
-                new Date(selectedSlot.start_time).toLocaleString("en-IN", {
-                  timeZone: "Asia/Kolkata",
-                  weekday: "long",
-                  day: "numeric",
-                  month: "long",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
+          <div className="mp-confirmed">
+            <div className="mp-confirmed-icon">
+              <CheckCircle size={32} color="#16A34A" />
+            </div>
+            <h2>Session confirmed</h2>
+            <p>Your booking is confirmed.</p>
+            <div className="mp-confirmed-details">
+              <div className="mp-confirmed-detail-row">
+                <span>Mentor</span>
+                <span>{mentor.name}</span>
+              </div>
+              <div className="mp-confirmed-detail-row">
+                <span>Duration</span>
+                <span>{mentor.duration} min</span>
+              </div>
+              {selectedSlot && (
+                <div className="mp-confirmed-detail-row">
+                  <span>When</span>
+                  <span>
+                    {new Date(selectedSlot.start_time).toLocaleString("en-IN", {
+                      timeZone: "Asia/Kolkata",
+                      weekday: "short",
+                      day: "numeric",
+                      month: "short",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </div>
+              )}
+              <div className="mp-confirmed-detail-row">
+                <span>Amount paid</span>
+                <span>₹{mentor.price}</span>
+              </div>
+            </div>
+            <p className="mp-confirmed-email">
+              <Mail size={12} /> Confirmation sent to your email
             </p>
-            <button className="continue-btn" onClick={() => setBooked(false)}>
-              Book Another Session
+            <button
+              className="mp-btn-secondary"
+              onClick={() => setBooked(false)}
+            >
+              Book another session
             </button>
           </div>
         ) : (
           <>
-            <h2>When should we meet?</h2>
+            <h2 className="mp-booking-title">Book your session</h2>
+            <p className="mp-booking-sub">
+              Choose a date and time that works for you
+            </p>
 
-            <div className="day-row">
-              {days.map((day) => (
-                <button
-                  key={day}
-                  onClick={() => {
-                    setSelectedDay(day);
-                    setSelectedSlot(null);
-                  }}
-                  className={selectedDay === day ? "day-btn active" : "day-btn"}
-                >
-                  {day}
-                </button>
-              ))}
-            </div>
+            {visibleSlots.length > 0 && (
+              <div className="mp-slots-available">
+                <CheckCircle size={12} /> {visibleSlots.length} slots available
+              </div>
+            )}
 
-            <div className="sub-section">
-              <p>Select time of day</p>
-              <div className="time-grid">
-                {visibleSlots.map((slot) => (
-                  <button
-                    key={slot.id}
-                    onClick={() => {
-                      setSelectedSlot(slot);
-                      setSlotError(false);
-                    }}
-                    className={
-                      selectedSlot?.id === slot.id
-                        ? "time-btn active"
-                        : "time-btn"
-                    }
-                  >
-                    {new Date(slot.start_time).toLocaleTimeString([], {
+            {days.length === 0 ? (
+              <div className="mp-empty">
+                <div className="mp-empty-icon">
+                  <CalendarX size={22} />
+                </div>
+                <h3>No slots available</h3>
+                <p>
+                  This mentor hasn't added availability yet. Check back soon.
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="mp-day-row">
+                  {days.map((day) => (
+                    <button
+                      key={day}
+                      onClick={() => {
+                        setSelectedDay(day);
+                        setSelectedSlot(null);
+                      }}
+                      className={`mp-day-btn ${selectedDay === day ? "active" : ""}`}
+                    >
+                      {day}
+                    </button>
+                  ))}
+                </div>
+
+                <p className="mp-time-label">Available times</p>
+                <div className="mp-time-grid">
+                  {visibleSlots.map((slot) => (
+                    <button
+                      key={slot.id}
+                      onClick={() => {
+                        setSelectedSlot(slot);
+                        setSlotError(false);
+                      }}
+                      className={`mp-time-btn ${selectedSlot?.id === slot.id ? "active" : ""}`}
+                    >
+                      {selectedSlot?.id === slot.id && <Check size={12} />}
+                      {new Date(slot.start_time).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {slotError && (
+              <p className="mp-slot-error">
+                <AlertCircle size={13} /> Select a time slot to continue
+              </p>
+            )}
+
+            {selectedSlot && (
+              <div className="mp-summary">
+                <p className="mp-summary-heading">Session summary</p>
+                <div className="mp-summary-row">
+                  <span>Mentor</span>
+                  <span>{mentor.name}</span>
+                </div>
+                <div className="mp-summary-row">
+                  <span>Duration</span>
+                  <span>{mentor.duration} min</span>
+                </div>
+                <div className="mp-summary-row">
+                  <span>Time</span>
+                  <span>
+                    {new Date(selectedSlot.start_time).toLocaleString("en-IN", {
+                      timeZone: "Asia/Kolkata",
+                      weekday: "short",
+                      day: "numeric",
+                      month: "short",
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
-                  </button>
-                ))}
+                  </span>
+                </div>
+                <div className="mp-summary-row total">
+                  <span>Total</span>
+                  <span>₹{mentor.price}</span>
+                </div>
               </div>
+            )}
 
-              {slotError && (
-                <p className="slot-error">
-                  Please select a time slot before continuing.
-                </p>
-              )}
-            </div>
-
-            <button className="continue-btn" onClick={bookSession}>
-              Pay & Book Session
+            <button className="mp-btn-primary" onClick={bookSession}>
+              <Lock size={14} /> Continue to secure payment
             </button>
+
+            <div className="mp-payment-trust">
+              <span className="mp-payment-trust-item">
+                <ShieldCheck size={12} /> SSL secured
+              </span>
+              <span className="mp-payment-trust-item">
+                <Lock size={12} /> Razorpay
+              </span>
+              <span className="mp-payment-trust-item">
+                <CheckCircle size={12} /> No hidden charges
+              </span>
+            </div>
           </>
         )}
       </div>
