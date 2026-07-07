@@ -15,12 +15,14 @@ function LandingPage() {
   return (
     <>
       <Header />
-      <Maincontainer search={search} setSearch={setSearch} />
-      <Feature search={search} />
-      <HowItWorks />
-      <WhyUs />
-      <SocialProof />
-      <CallToAction />
+      <div className="page-wrap">
+        <Maincontainer search={search} setSearch={setSearch} />
+        <Feature search={search} />
+        <HowItWorks />
+        <WhyUs />
+        <SocialProof />
+        <CallToAction />
+      </div>
       <Footer />
     </>
   );
