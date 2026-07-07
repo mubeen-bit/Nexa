@@ -85,6 +85,8 @@ const Feature = ({ search = "" }) => {
                 title={student.title}
                 placed={student.company}
                 avatar={student.avatar_url}
+                price={student.price}
+                duration={student.duration}
                 skills={student.skills}
               />
             </Link>

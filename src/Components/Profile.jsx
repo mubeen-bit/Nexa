@@ -7,6 +7,9 @@ import {
   ShieldCheck,
   ArrowUpRight,
   BadgeCheck,
+  CalendarDays,
+  CircleDollarSign,
+  Clock3,
 } from "lucide-react";
 
 const Profile = (props) => {
@@ -19,84 +22,93 @@ const Profile = (props) => {
 
   const skills = props.skills || [
     "Resume Review",
-    "Career Guidance",
     "Interview Prep",
+    "Career Guidance",
+    "DSA",
+    "Placement",
   ];
+  const visibleSkills = skills.slice(0, 2);
+  const extraSkills = skills.length > 2 ? skills.length - 2 : 0;
 
   return (
     <div className="pc-card">
-      {/* TOP */}
-      <div className="pc-top">
+      {/* ── HEADER ── */}
+      <div className="pc-header">
         <div className="pc-avatar-wrap">
           {props.avatar ? (
             <img src={props.avatar} alt={props.name} className="pc-avatar" />
           ) : (
             <div className="pc-avatar-initials">{initials}</div>
           )}
-          <div className="pc-verified-dot" title="Verified">
+          <div className="pc-verified-dot" title="Verified mentor">
             <BadgeCheck size={14} color="#2563EB" />
           </div>
         </div>
 
-        <div className="pc-arrow">
-          <ArrowUpRight size={16} />
-        </div>
-      </div>
+        <div className="pc-header-info">
+          <div className="pc-name-row">
+            <h3 className="pc-name">{props.name}</h3>
+            <ArrowUpRight size={16} className="pc-arrow" />
+          </div>
 
-      {/* INFO */}
-      <div className="pc-info">
-        <h3 className="pc-name">{props.name}</h3>
+          {props.title && <p className="pc-role">{props.title}</p>}
 
-        {props.title && <p className="pc-role">{props.title}</p>}
-
-        <div className="pc-meta">
           {props.college && (
             <span className="pc-meta-item">
-              <GraduationCap size={13} />
-              {props.college}
+              <GraduationCap size={12} />
+              <span className="pc-meta-text">{props.college}</span>
             </span>
           )}
+
           {props.placed && (
             <span className="pc-meta-item">
-              <Building2 size={13} />
-              {props.placed}
+              <Building2 size={12} />
+              <span className="pc-meta-text">{props.placed}</span>
             </span>
           )}
         </div>
       </div>
 
-      {/* RATING */}
-      <div className="pc-rating">
-        <div className="pc-stars">
-          {[1, 2, 3, 4, 5].map((s) => (
-            <Star key={s} size={11} fill="#D4A017" color="#D4A017" />
-          ))}
-        </div>
-        <span className="pc-rating-val">4.9</span>
-        <span className="pc-rating-count">· 42 reviews</span>
+      {/* ── VERIFIED / RATING ── */}
+      <div className="pc-trust">
         <span className="pc-verified-badge">
-          <ShieldCheck size={11} /> Verified
+          <ShieldCheck size={11} /> Verified mentor
         </span>
       </div>
 
-      {/* SKILLS */}
+      {/* ── SKILLS ── */}
       <div className="pc-skills">
-        {skills.slice(0, 3).map((s) => (
+        {visibleSkills.map((s) => (
           <span className="pc-skill" key={s}>
             {s}
           </span>
         ))}
+        {extraSkills > 0 && (
+          <span className="pc-skill pc-skill-more">+{extraSkills}</span>
+        )}
       </div>
 
-      {/* FOOTER */}
+      {/* ── FOOTER ── */}
       <div className="pc-footer">
-        {props.placed && (
-          <span className="pc-placement">
-            <Building2 size={12} /> {props.placed}
+        <div className="pc-footer-meta">
+          {props.price && (
+            <span className="pc-footer-item">
+              <CircleDollarSign size={13} />₹{props.price}
+            </span>
+          )}
+          {props.duration && (
+            <span className="pc-footer-item">
+              <Clock3 size={13} />
+              {props.duration} min
+            </span>
+          )}
+          <span className="pc-footer-item pc-available">
+            <CalendarDays size={13} />
+            Available
           </span>
-        )}
+        </div>
         <span className="pc-cta">
-          View profile <ArrowUpRight size={13} />
+          View profile <ArrowUpRight size={13} className="pc-cta-arrow" />
         </span>
       </div>
     </div>
