@@ -2,8 +2,10 @@
 .sp-wrap {
   padding: 4rem 2rem;
   text-align: center;
-  max-width: 1000px;
+  width: 100%;
+  max-width: 1280px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .sp-title {
@@ -20,6 +22,8 @@
 }
 
 .sp-grid {
+  max-width: 1000px;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;

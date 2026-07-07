@@ -2,7 +2,11 @@
   background-color: #18230f;
   color: #fff;
   padding: 40px 20px 20px;
-  font-family: Arial, sans-serif;
+  font-family:
+    Mona Sans,
+    sans-serif;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .footer-container {
