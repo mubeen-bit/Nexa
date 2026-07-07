@@ -46,7 +46,7 @@
 
 .s-btn input {
   width: 200px;
-  margin-top: 20px;
+  margin: 10px;
   font-size: 12px;
   padding: 10px 36px 10px 16px;
   border-radius: 25px;
@@ -64,8 +64,8 @@
 
 .s-btn i {
   position: absolute;
-  top: 60%;
-  right: 12px;
+  top: 45%;
+  right: 20px;
   transform: translateY(-25%);
   color: #18230f;
   cursor: pointer;
