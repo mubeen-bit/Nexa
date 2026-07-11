@@ -279,7 +279,7 @@ export default function MentorshipPage() {
                 ))}
               </div>
               <span className="mp-rating-val">{mentor.rating}</span>
-              <span className="mp-rating-count">· 42 reviews</span>
+              <span className="mp-rating-count">· 1 reviews</span>
             </div>
             <div className="mp-response" style={{ marginTop: 10 }}>
               <Zap size={12} color="#2563EB" /> Responds within 2 hours
@@ -339,24 +339,24 @@ export default function MentorshipPage() {
               <p className="mp-stat-val">{mentor.duration} min</p>
             </div>
           </div>
-          <div className="mp-stat">
+          {/* <div className="mp-stat">
             <div className="mp-stat-icon-wrap">
               <Users size={15} />
             </div>
             <div>
               <p className="mp-stat-label">Sessions</p>
-              <p className="mp-stat-val">120+</p>
+              <p className="mp-stat-val">10+</p>
             </div>
-          </div>
-          <div className="mp-stat">
+          </div> */}
+          {/* <div className="mp-stat">
             <div className="mp-stat-icon-wrap">
               <Award size={15} />
             </div>
             <div>
               <p className="mp-stat-label">Experience</p>
-              <p className="mp-stat-val">3 yrs</p>
+              <p className="mp-stat-val">1 yrs</p>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="mp-divider" />
@@ -385,7 +385,7 @@ export default function MentorshipPage() {
         <div className="mp-divider" />
 
         {/* Reviews */}
-        <div className="mp-section">
+        {/* <div className="mp-section">
           <div className="mp-section-header">
             <h3 className="mp-section-title">What students say</h3>
             <div className="mp-arrows">
@@ -436,7 +436,7 @@ export default function MentorshipPage() {
               No reviews yet — be the first to book!
             </p>
           )}
-        </div>
+        </div> */}
 
         <div className="mp-divider" />
 
